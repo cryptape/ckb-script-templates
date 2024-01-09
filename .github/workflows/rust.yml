@@ -213,6 +213,7 @@ jobs:
           set -ex
           pkg install -y llvm16 git
           curl https://sh.rustup.rs -sSf | sh -s -- -y
+          . $HOME/.cargo/env
           rustup target add riscv64imac-unknown-none-elf
           cargo install cargo-generate
         run: |
