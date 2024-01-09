@@ -1,10 +1,13 @@
 [template]
 sub_templates = [
-  "contract",
+  # Entrypoint templates
+  "workspace",
   "standalone-contract",
+  # Contract templates in workspace
+  "contract",
   "atomics-contract",
   "stack-reorder-contract",
+  # Dependency crate templates
   "c-wrapper-crate",
   "x64-simulator-crate",
-  "workspace",
 ]

@@ -153,6 +153,22 @@ $ make DESTINATION=crates                                      # generate a crat
 $ make generate TEMPLATE=c-wrapper-crate DESTINATION=crates    # generate a crate in crates folder, but use c-wrapper-crate template
 ```
 
+Ready-to-use templates have been put together for different use cases:
+
+* `contract`: default contract template you should use if no special requirements are neeeded.
+* `atomics-contract`: a contract template that supports atomic builtins without requiring RISC-V A extension. This template allows you to use `log`, `bytes` crate or other code that might deal with atomics before CKB2023.
+* `stack-reorder-contract`: a contract template that adjusts memory layout so stack lives at lower address, and heap lives at higher address. This way a program would explicitly signal errors when stack space is fully use.
+* `c-wrapper-crate`: a crate template that shows how to glue C code in a Rust crate for CKB's contract usage.
+* `x64-simulator-crate`: a crate template that contains Rust-only code, but usees [ckb-x64-simulator](https://github.com/nervosnetwork/ckb-x64-simulator) for tests.
+
+Certain template might require external modules to be available, for example:
+
+* All C code would require [ckb-c-stdlib](https://github.com/nervosnetwork/ckb-c-stdlib): `git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib`
+* `atomics-contract` requires [lib-dummy-atomics](https://github.com/xxuejie/lib-dummy-atomics): `git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics`
+* `stack-reorder-contract` requires [ckb-stack-reorg-bootloader](https://github.com/xxuejie/ckb-stack-reorg-bootloader): `git submodule add https://github.com/xxuejie/ckb-stack-reorg-bootloader deps/ckb-stack-reorg-bootloader`
+
+In future versions, we might leverage [cargo-generate hooks](https://cargo-generate.github.io/cargo-generate/templates/scripting.html) to add submodules automatically, but for now, manual steps are required.
+
 ### Build & Test
 
 Note that when you supply the contract crate name, our `Makefile` will be smart enough to automatically insert the crate in to `Cargo.toml` file, so you don't have to edit it manually.
