@@ -176,3 +176,33 @@ make test
 ```
 
 The templates provided here, use the same conventions as `ckb-native-build-sample` project, so feel free to refer to the more detailed [usage](https://github.com/xxuejie/ckb-native-build-sample?tab=readme-ov-file#usage) doc in the sample project.
+
+### Standalone Contract Crate
+
+In rare cases if you want to simply use a standalone contract crate without a workspace. The [standalone-contract](https://github.com/xxuejie/ckb-script-templates/tree/main/standalone-contract) template is prepared for you:
+
+```
+$ cargo generate gh:xxuejie/ckb-script-templates contract-with-tests
+⚠️   Favorite `gh:xxuejie/ckb-script-templates` not found in config, using it as a git repository: https://github.com/xxuejie/ckb-script-templates.git
+🤷   Project Name: standalone-first-contract
+🔧   Destination: /tmp/standalone-first-contract ...
+🔧   project-name: standalone-first-contract ...
+🔧   Generating template ...
+🔧   Moving generated files into: `/tmp/standalone-first-contract`...
+🔧   Initializing a fresh Git repository
+✨   Done! New project created /tmp/standalone-first-contract
+```
+
+You can then build and test the standalone crate as usual:
+
+```
+$ cd standalone-first-contract
+$ make build
+$ make tests
+$ make check
+$ make clippy
+```
+
+The template is tailored built for usage outside of workspace, typically, it is not expected to be used inside a workspace. Feel free to compare it with the default `contract` workspace for differences.
+
+This standalone template also has its own test setup, where in a workspace, a dedicated `tests` crate will handle most of the testing work.
