@@ -23,7 +23,7 @@ jobs:
     - name: Install cargo generate
       run: cargo install cargo-generate
     - name: Generate workspace
-      run: cargo generate --path . --name test-workspace
+      run: cargo generate --path . workspace --name test-workspace
     - name: Chdir to workspace
       run: cd test-workspace
     - name: Run build & test
