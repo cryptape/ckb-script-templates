@@ -87,7 +87,7 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: pacman --noconfirm -Syu clang git make openssl
+      run: pacman --noconfirm -Syu clang git make openssl pkgconf
     - uses: actions-rust-lang/setup-rust-toolchain@v1
     - uses: actions/checkout@v3
       with:
