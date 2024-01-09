@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+
+members = [
+  "crates/big-cell-fetcher",
+  "crates/big-witness-hasher",
+  "contracts/atomics-without-a",
+  "contracts/legacy-c-dependency",
+  "contracts/loads-of-hashes",
+  "contracts/minimal-log",
+  "contracts/stack-reorder",
+  "tests",
+]
+
+[profile.release]
+overflow-checks = true
+strip = true
+codegen-units = 1
