@@ -98,7 +98,7 @@ generate:
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION) \
 			--name $(CRATE); \
-		sed '/@@INSERTION_POINT@@/a\
+		sed '/@@INSERTION_POINT@@/a\\
 \ \ "$(DESTINATION)/$(CRATE)",' Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
 	fi
