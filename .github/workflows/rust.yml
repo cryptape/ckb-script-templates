@@ -50,7 +50,7 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: sudo dnf -y install clang git make
+      run: sudo dnf -y install clang git make openssl-devel
     - uses: actions-rust-lang/setup-rust-toolchain@v1
     - uses: actions/checkout@v3
       with:
@@ -87,7 +87,7 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: pacman --noconfirm -Syu clang git make
+      run: pacman --noconfirm -Syu clang git make openssl
     - uses: actions-rust-lang/setup-rust-toolchain@v1
     - uses: actions/checkout@v3
       with:
