@@ -47,6 +47,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: fedora:latest
+      env:
+        USER: ${{ github.actor }}
 
     steps:
     - name: Install dependencies
@@ -84,6 +86,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:latest
+      env:
+        USER: ${{ github.actor }}
 
     steps:
     - name: Install dependencies
