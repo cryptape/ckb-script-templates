@@ -196,3 +196,28 @@ jobs:
       run: cargo generate --path . standalone-contract --name test-contract
     - name: Run all checks
       run: cd test-contract && make build test check clippy
+
+  freebsd-build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Run in FreeBSD VM
+      uses: vmactions/freebsd-vm@v1
+      with:
+        usesh: true
+        prepare: |
+          set -ex
+          pkg install -y llvm16 git
+          curl https://sh.rustup.rs -sSf | sh -s
+          rustup target add riscv64imac-unknown-none-elf
+          cargo install cargo-generate
+        run: |
+          set -ex
+          cargo generate --path . standalone-contract --name test-contract
+          cd test-contract
+          make build test check clippy
+          cd ..
