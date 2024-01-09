@@ -145,6 +145,8 @@ jobs:
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+    - name: Cat Cargo.toml for debug
+      run: cd test-workspace && cat Cargo.toml
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
