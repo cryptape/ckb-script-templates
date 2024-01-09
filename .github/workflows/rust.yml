@@ -211,7 +211,7 @@ jobs:
         usesh: true
         prepare: |
           set -ex
-          pkg install -y llvm16 git
+          pkg install -y llvm16 git gmake
           curl https://sh.rustup.rs -sSf | sh -s -- -y
           . $HOME/.cargo/env
           rustup target add riscv64imac-unknown-none-elf
@@ -222,6 +222,6 @@ jobs:
           cargo generate --path . standalone-contract --name test-contract
           pwd
           cd test-contract
-          make build test check clippy
+          gmake build test check clippy
           cd ..
           pwd
