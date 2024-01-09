@@ -25,15 +25,15 @@ jobs:
     - name: Generate workspace
       run: cargo generate --path . workspace --name test-workspace
     - name: Generate crates && contracts
-      run: cd test-workspace && \
-        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates && \
-        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates && \
-        make generate CRATE=c1 TEMPLATE=contract && \
-        make generate CRATE=c2 TEMPLATE=atomics-contract && \
+      run: cd test-workspace &&
+        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates &&
+        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates &&
+        make generate CRATE=c1 TEMPLATE=contract &&
+        make generate CRATE=c2 TEMPLATE=atomics-contract &&
         make generate CRATE=c3 TEMPLATE=stack-reorder-contract
     - name: Submodules
-      run: cd test-workspace && \
-        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib && \
+      run: cd test-workspace &&
+        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
         git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
     - name: Run all checks
       run: cd test-workspace && make build test check clippy
