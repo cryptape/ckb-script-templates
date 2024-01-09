@@ -83,6 +83,23 @@ clean:
 	rm -rf build
 	cargo clean
 
+TEMPLATE_REPO := https://github.com/xxuejie/ckb-script-templates
+CRATE :=
+TEMPLATE := contract
+DESTINATION := contracts
+generate:
+	@set -eu; \
+	if [ "x$(CRATE)" = "x" ]; then \
+		cargo generate --git $(TEMPLATE_REPO) $(TEMPLATE) \
+			--destination $(DESTINATION); \
+		echo "Please update workspace-level Cargo.toml so members include the newly created crate!"; \
+	else \
+		cargo generate --git $(TEMPLATE_REPO) $(TEMPLATE) \
+			--destination $(DESTINATION) \
+			--name $(CRATE); \
+		sed -i '/@@INSERTION_POINT@@/a \ \ "$(DESTINATION)/$(CRATE)",' Cargo.toml; \
+	fi
+
 prepare:
 	rustup target add riscv64imac-unknown-none-elf
 
