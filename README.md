@@ -198,7 +198,7 @@ The templates provided here, use the same conventions as `ckb-native-build-sampl
 In rare cases if you want to simply use a standalone contract crate without a workspace. The [standalone-contract](https://github.com/xxuejie/ckb-script-templates/tree/main/standalone-contract) template is prepared for you:
 
 ```
-$ cargo generate gh:xxuejie/ckb-script-templates contract-with-tests
+$ cargo generate gh:xxuejie/ckb-script-templates standalone-contract
 ⚠️   Favorite `gh:xxuejie/ckb-script-templates` not found in config, using it as a git repository: https://github.com/xxuejie/ckb-script-templates.git
 🤷   Project Name: standalone-first-contract
 🔧   Destination: /tmp/standalone-first-contract ...
