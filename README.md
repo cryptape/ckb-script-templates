@@ -62,7 +62,7 @@ $ create-ckb-scripts
 ✨   Done! New project created /tmp/my-first-contract-workspace
 ```
 
-### Working in the workspace
+### Generating contract crates in the workspace
 
 First, navigate to the workspace directory you just created:
 
@@ -136,6 +136,24 @@ $ make generate CRATE=second-contract
 🔧   Initializing a fresh Git repository
 ✨   Done! New project created /tmp/my-first-contract-workspace/contracts/second-contract
 ```
+
+By default, the newly created crate is using [contract](https://github.com/xxuejie/ckb-script-templates/tree/main/contract) template, which is put into `contracts` sub-folder, the workspace-level `Makefile` assumes all Rust contracts are stored in `contracts` folder, and treat crates stored in other folders as dependency-only Rust crates.
+
+But chances are you would want to tweak the default settings in certain scenarios:
+
+* Sometimes you want to use a different template as a contract starting point other than `contract` template.
+* Sometimes you want to use a different template since you are generating a plain Rust crate, which will also likely be put in a different subfolder other than `contracts`
+* **Note**: while you could technically put a Rust contract in a different subfolder other than `contracts`, we don't really recommend this, since the workspace-level `Makefile` is leveraging the convention that all CKB contracts live in `contracts` folder.
+
+You can do this by customizing parameters to `make generate`:
+
+```
+$ make generate TEMPLATE=contract-with-tests                   # generate a Rust contract crate in contracts subfolder, but use contract-with-tests template
+$ make DESTINATION=crates                                      # generate a crate in crates folder, and still use the default contract template
+$ make generate TEMPLATE=c-wrapper-crate DESTINATION=crates    # generate a crate in crates folder, but use c-wrapper-crate template
+```
+
+### Build & Test
 
 Note that when you supply the contract crate name, our `Makefile` will be smart enough to automatically insert the crate in to `Cargo.toml` file, so you don't have to edit it manually.
 
