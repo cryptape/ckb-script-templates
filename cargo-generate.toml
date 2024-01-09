@@ -2,6 +2,8 @@
 sub_templates = [
   "contract",
   "standalone-contract",
+  "atomics-contract",
+  "stack-reorder-contract",
   "c-wrapper-crate",
   "x64-simulator-crate",
   "workspace",
