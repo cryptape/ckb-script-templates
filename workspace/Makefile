@@ -42,10 +42,10 @@ build:
 	@set -eu; \
 	if [ "x$(CONTRACT)" = "x" ]; then \
 		for contract in $(wildcard contracts/*); do \
-			make -e -C $$contract build; \
+			$(MAKE) -e -C $$contract build; \
 		done; \
 	else \
-		make -e -C contracts/$(CONTRACT) build; \
+		$(MAKE) -e -C contracts/$(CONTRACT) build; \
 	fi
 
 # Run a single make task for a specific contract. For example:
@@ -53,7 +53,7 @@ build:
 # make run CONTRACT=stack-reorder TASK=adjust_stack_size STACK_SIZE=0x200000
 TASK :=
 run:
-	make -e -C contracts/$(CONTRACT) $(TASK)
+	$(MAKE) -e -C contracts/$(CONTRACT) $(TASK)
 
 # test, check, clippy and fmt here are provided for completeness,
 # there is nothing wrong invoking cargo directly instead of make.
