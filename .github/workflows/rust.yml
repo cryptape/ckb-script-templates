@@ -54,11 +54,12 @@ jobs:
     - name: Install dependencies
       run: sudo dnf -y install clang git make openssl-devel
     - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        components: clippy
+        target: riscv64imac-unknown-none-elf
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: Install riscv64 target
-      run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
       run: cargo install cargo-generate
     - name: Generate workspace
@@ -93,11 +94,12 @@ jobs:
     - name: Install dependencies
       run: pacman --noconfirm -Syu clang git make openssl pkgconf
     - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        components: clippy
+        target: riscv64imac-unknown-none-elf
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: Install riscv64 target
-      run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
       run: cargo install cargo-generate
     - name: Generate workspace
