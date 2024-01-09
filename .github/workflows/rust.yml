@@ -211,7 +211,7 @@ jobs:
         usesh: true
         prepare: |
           set -ex
-          pkg install -y llvm16 git gmake
+          pkg install -y llvm16 git gmake bash
           curl https://sh.rustup.rs -sSf | sh -s -- -y
           . $HOME/.cargo/env
           rustup target add riscv64imac-unknown-none-elf
@@ -220,8 +220,16 @@ jobs:
           set -ex
           . $HOME/.cargo/env      
           cargo generate --path . standalone-contract --name test-contract
-          pwd
           cd test-contract
           gmake build test check clippy
           cd ..
-          pwd
+          cargo generate --path . workspace --name test-workspace
+          cd test-workspace
+          gmake generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+          gmake generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+          gmake generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+          gmake generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+          gmake generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+          git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib
+          git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+          gmake build test check clippy
