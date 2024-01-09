@@ -148,7 +148,7 @@ But chances are you would want to tweak the default settings in certain scenario
 You can do this by customizing parameters to `make generate`:
 
 ```
-$ make generate TEMPLATE=contract-with-tests                   # generate a Rust contract crate in contracts subfolder, but use contract-with-tests template
+$ make generate TEMPLATE=atomics-contract                      # generate a Rust contract crate in contracts subfolder, but use atomics-contract template
 $ make DESTINATION=crates                                      # generate a crate in crates folder, and still use the default contract template
 $ make generate TEMPLATE=c-wrapper-crate DESTINATION=crates    # generate a crate in crates folder, but use c-wrapper-crate template
 ```
