@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  ubuntu-build:
 
     runs-on: ubuntu-latest
 
@@ -18,6 +18,155 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install llvm 16
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 16 && rm llvm.sh
+    - name: Install riscv64 target
+      run: rustup target add riscv64imac-unknown-none-elf
+    - name: Install cargo generate
+      run: cargo install cargo-generate
+    - name: Generate workspace
+      run: cargo generate --path . workspace --name test-workspace
+    - name: Generate crates && contracts
+      run: cd test-workspace &&
+        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+    - name: Submodules
+      run: cd test-workspace &&
+        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
+        git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+    - name: Run all checks
+      run: cd test-workspace && make build test check clippy
+    - name: Generate standalone contract
+      run: cargo generate --path . standalone-contract --name test-contract
+    - name: Run all checks
+      run: cd test-contract && make build test check clippy
+
+  fedora-build:
+
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+
+    steps:
+    - name: Install dependencies
+      run: sudo dnf -y install clang git make
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Install riscv64 target
+      run: rustup target add riscv64imac-unknown-none-elf
+    - name: Install cargo generate
+      run: cargo install cargo-generate
+    - name: Generate workspace
+      run: cargo generate --path . workspace --name test-workspace
+    - name: Generate crates && contracts
+      run: cd test-workspace &&
+        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+    - name: Submodules
+      run: cd test-workspace &&
+        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
+        git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+    - name: Run all checks
+      run: cd test-workspace && make build test check clippy
+    - name: Generate standalone contract
+      run: cargo generate --path . standalone-contract --name test-contract
+    - name: Run all checks
+      run: cd test-contract && make build test check clippy
+
+  arch-build:
+
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+    - name: Install dependencies
+      run: pacman --noconfirm -Syu clang git make
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Install riscv64 target
+      run: rustup target add riscv64imac-unknown-none-elf
+    - name: Install cargo generate
+      run: cargo install cargo-generate
+    - name: Generate workspace
+      run: cargo generate --path . workspace --name test-workspace
+    - name: Generate crates && contracts
+      run: cd test-workspace &&
+        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+    - name: Submodules
+      run: cd test-workspace &&
+        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
+        git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+    - name: Run all checks
+      run: cd test-workspace && make build test check clippy
+    - name: Generate standalone contract
+      run: cargo generate --path . standalone-contract --name test-contract
+    - name: Run all checks
+      run: cd test-contract && make build test check clippy
+
+  macos-build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Install llvm 16
+      run: brew install llvm@16
+    - name: Install riscv64 target
+      run: rustup target add riscv64imac-unknown-none-elf
+    - name: Install cargo generate
+      run: cargo install cargo-generate
+    - name: Generate workspace
+      run: cargo generate --path . workspace --name test-workspace
+    - name: Generate crates && contracts
+      run: cd test-workspace &&
+        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+    - name: Submodules
+      run: cd test-workspace &&
+        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
+        git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+    - name: Run all checks
+      run: cd test-workspace && make build test check clippy
+    - name: Generate standalone contract
+      run: cargo generate --path . standalone-contract --name test-contract
+    - name: Run all checks
+      run: cd test-contract && make build test check clippy
+
+  windows-build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Install llvm
+      shell: pwsh
+      # https://github.com/ScoopInstaller/Install#for-admin
+      #
+      # Note that on Windows we cannot choose LLVM 16 here, we have to settle on latest stable LLVM
+      run: |
+        iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+        scoop install llvm yasm
+        echo "$env:USERPROFILE\scoop\shims" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Install riscv64 target
       run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
