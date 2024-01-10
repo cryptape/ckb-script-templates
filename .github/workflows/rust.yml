@@ -52,7 +52,7 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: apt-get update && apt-get -y install curl git build-essential libssl-dev lsb-release wget software-properties-common gnupg
+      run: apt-get update && apt-get -y install curl git build-essential pkg-config libssl-dev lsb-release wget software-properties-common gnupg
     - name: Install llvm 16
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh 16 && rm llvm.sh
     - uses: actions-rust-lang/setup-rust-toolchain@v1
