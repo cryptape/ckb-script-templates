@@ -52,7 +52,7 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: sudo apt-get -y install git build-essential libssl-devel
+      run: apt-get update && apt-get -y install git build-essential libssl-devel
     - name: Install llvm 16
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 16 && rm llvm.sh
     - uses: actions-rust-lang/setup-rust-toolchain@v1
