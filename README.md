@@ -23,8 +23,8 @@ The following dependencies are required for the templates:
 To generate a workspace template, use the following command:
 
 ```
-$ cargo generate gh:xxuejie/ckb-script-templates workspace
-⚠️   Favorite `gh:xxuejie/ckb-script-templates` not found in config, using it as a git repository: https://github.com/xxuejie/ckb-script-templates.git
+$ cargo generate gh:cryptape/ckb-script-templates workspace
+⚠️   Favorite `gh:cryptape/ckb-script-templates` not found in config, using it as a git repository: https://github.com/cryptape/ckb-script-templates.git
 🤷   Project Name: my-first-contract-workspace
 🔧   Destination: /tmp/my-first-contract-workspace ...
 🔧   project-name: my-first-contract-workspace ...
@@ -37,8 +37,8 @@ $ cargo generate gh:xxuejie/ckb-script-templates workspace
 Or you can manually specify the name and skip the prompt:
 
 ```
-$ cargo generate gh:xxuejie/ckb-script-templates workspace --name my-first-contract-workspace
-⚠️   Favorite `gh:xxuejie/ckb-script-templates` not found in config, using it as a git repository: https://github.com/xxuejie/ckb-script-templates.git
+$ cargo generate gh:cryptape/ckb-script-templates workspace --name my-first-contract-workspace
+⚠️   Favorite `gh:cryptape/ckb-script-templates` not found in config, using it as a git repository: https://github.com/cryptape/ckb-script-templates.git
 🔧   Destination: /tmp/my-first-contract-workspace ...
 🔧   project-name: my-first-contract-workspace ...
 🔧   Generating template ...
@@ -50,9 +50,9 @@ $ cargo generate gh:xxuejie/ckb-script-templates workspace --name my-first-contr
 This is probably the only longer command you will deal with when using the templates repository. You can save them as an alias in your shell:
 
 ```
-$ alias create-ckb-scripts="cargo generate gh:xxuejie/ckb-script-templates workspace"
+$ alias create-ckb-scripts="cargo generate gh:cryptape/ckb-script-templates workspace"
 $ create-ckb-scripts
-⚠️   Favorite `gh:xxuejie/ckb-script-templates` not found in config, using it as a git repository: https://github.com/xxuejie/ckb-script-templates.git
+⚠️   Favorite `gh:cryptape/ckb-script-templates` not found in config, using it as a git repository: https://github.com/cryptape/ckb-script-templates.git
 🤷   Project Name: my-first-contract-workspace
 🔧   Destination: /tmp/my-first-contract-workspace ...
 🔧   project-name: my-first-contract-workspace ...
@@ -137,7 +137,7 @@ $ make generate CRATE=second-contract
 ✨   Done! New project created /tmp/my-first-contract-workspace/contracts/second-contract
 ```
 
-By default, the newly created crate is using [contract](https://github.com/xxuejie/ckb-script-templates/tree/main/contract) template, which is put into `contracts` sub-folder, the workspace-level `Makefile` assumes all Rust contracts are stored in `contracts` folder, and treat crates stored in other folders as dependency-only Rust crates.
+By default, the newly created crate is using [contract](https://github.com/cryptape/ckb-script-templates/tree/main/contract) template, which is put into `contracts` sub-folder, the workspace-level `Makefile` assumes all Rust contracts are stored in `contracts` folder, and treat crates stored in other folders as dependency-only Rust crates.
 
 But chances are you would want to tweak the default settings in certain scenarios:
 
@@ -195,11 +195,11 @@ The templates provided here, use the same conventions as `ckb-native-build-sampl
 
 ### Standalone Contract Crate
 
-In rare cases if you want to simply use a standalone contract crate without a workspace. The [standalone-contract](https://github.com/xxuejie/ckb-script-templates/tree/main/standalone-contract) template is prepared for you:
+In rare cases if you want to simply use a standalone contract crate without a workspace. The [standalone-contract](https://github.com/cryptape/ckb-script-templates/tree/main/standalone-contract) template is prepared for you:
 
 ```
-$ cargo generate gh:xxuejie/ckb-script-templates standalone-contract
-⚠️   Favorite `gh:xxuejie/ckb-script-templates` not found in config, using it as a git repository: https://github.com/xxuejie/ckb-script-templates.git
+$ cargo generate gh:cryptape/ckb-script-templates standalone-contract
+⚠️   Favorite `gh:cryptape/ckb-script-templates` not found in config, using it as a git repository: https://github.com/cryptape/ckb-script-templates.git
 🤷   Project Name: standalone-first-contract
 🔧   Destination: /tmp/standalone-first-contract ...
 🔧   project-name: standalone-first-contract ...
