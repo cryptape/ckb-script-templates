@@ -101,28 +101,6 @@ $ make generate
 🔧   Moving generated files into: `/tmp/my-first-contract-workspace/contracts/first-contract`...
 🔧   Initializing a fresh Git repository
 ✨   Done! New project created /tmp/my-first-contract-workspace/contracts/first-contract
-Please update workspace-level Cargo.toml so members include the newly created crate!
-```
-
-As the log line hints, after creating the contract, we will need to manually update `Cargo.toml` file to contain the newly created contract crate. When you finished editing, `Cargo.toml` file should look like following:
-
-```
-$ cat Cargo.toml
-[workspace]
-resolver = "2"
-
-members = [
-  # Please don't remove the following line, we use it to automatically
-  # detect insertion point for newly generated crates.
-  # @@INSERTION_POINT@@
-  "contracts/first-contract",
-  "tests",
-]
-
-[profile.release]
-overflow-checks = true
-strip = true
-codegen-units = 1
 ```
 
 You can also supply the contract create name when executing the make task:
