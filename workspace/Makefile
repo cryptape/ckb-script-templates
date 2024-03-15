@@ -72,7 +72,7 @@ fmt:
 # Arbitrary cargo command is supported here. For example:
 #
 # make cargo CARGO_CMD=expand CARGO_ARGS="--ugly"
-# 
+#
 # Invokes:
 # cargo expand --ugly
 CARGO_CMD :=
@@ -93,7 +93,9 @@ generate:
 	if [ "x$(CRATE)" = "x" ]; then \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION); \
-		echo "Please update workspace-level Cargo.toml so members include the newly created crate!"; \
+		GENERATED_DIR=$$(ls -dt $(DESTINATION)/* | head -n 1); \
+		sed "s,@@INSERTION_POINT@@,@@INSERTION_POINT@@\n  \"$$GENERATED_DIR\"\,," Cargo.toml > Cargo.toml.new; \
+		mv Cargo.toml.new Cargo.toml; \
 	else \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION) \
