@@ -171,6 +171,30 @@ make test
 
 The templates provided here, use the same conventions as `ckb-native-build-sample` project, so feel free to refer to the more detailed [usage](https://github.com/xxuejie/ckb-native-build-sample?tab=readme-ov-file#usage) doc in the sample project.
 
+### Reproducible Build
+
+When using this set of templates, we always recommend to use locally installed native versions of LLVM & Rust to build and test your scripts. However, reproducible build is an important part of CKB scripts, which would require locked versions of LLVM & Rust to work, which might not be an easy task when using locally installed versions of compilers.
+
+For the time being, we have prepared a script that does reproducible build via [a docker container image](https://github.com/cryptape/llvm-n-rust). We do want to mention that docker is not necessarily THE way to do reproducible build, nor is it the best way to do reproducible build. There might well be other ways that are better, such as chroot or Nix. It's just that historically, docker has been used in CKB script's build process, and adding a script leveraging docker here, provides an easy solution into the issue.
+
+To do reproducible build, you can use the included script with varying commands:
+
+```
+$ ./scripts/reproducible_build_docker               # Clean current repository, used locked LLVM & Rust from a docker container
+                                                    # to build all contracts, then test the binaries against a checksum file.
+
+$ ./scripts/reproducible_build_docker --update      # Update the checksum file with new binaries, could be handy when you have
+                                                    # made changes to the binaries.
+
+$ ./scripts/reproducible_build_docker --no-clean    # Do not clean intermediate files before building, it is not recommended to
+                                                    # use this but when you really know what you are doing, it could help you save
+                                                    # some time.
+
+$ ./scripts/reproducible_build_docker --proxy "..." # Setup docker container so it pulls Rust crates using a proxy server
+```
+
+By default, the checksum file is stored in `checksums.txt` in the root of the repository. It is strongly recommended that this file is checked into version control, and a CI is setup so reproducible build is always checked in new commits.
+
 ### Standalone Contract Crate
 
 In rare cases if you want to simply use a standalone contract crate without a workspace. The [standalone-contract](https://github.com/cryptape/ckb-script-templates/tree/main/standalone-contract) template is prepared for you:
