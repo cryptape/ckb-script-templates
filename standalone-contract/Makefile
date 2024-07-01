@@ -24,7 +24,7 @@ BUILD_DIR := build/$(MODE)
 # likely match the crate name, which is also the name of the final binary.
 # However if this is not the case, you can tweak this variable. As the name hints,
 # more than one binary is supported here.
-BINARIES := $(notdir $(shell pwd))
+BINARIES := {{project-name}}
 
 ifeq (release,$(MODE))
 	MODE_ARGS := --release
@@ -74,5 +74,10 @@ clean:
 
 prepare:
 	rustup target add riscv64imac-unknown-none-elf
+
+# Generate checksum info for reproducible build
+CHECKSUM_FILE := build/checksums-$(MODE).txt
+checksum: build
+	shasum -a 256 build/$(MODE)/* > $(CHECKSUM_FILE)
 
 .PHONY: build test check clippy fmt cargo clean prepare
