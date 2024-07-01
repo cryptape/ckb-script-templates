@@ -62,9 +62,9 @@ if [[ "${SUDO}" = "yes" ]]; then
   PREFIX="sudo"
 fi
 
-$PREFIX $DOCKER run --rm $PROXY_ARGS -v `pwd`:/code $DOCKER_IMAGE make $TASKS
+$PREFIX $DOCKER run --rm $DOCKER_RUN_ARGS $PROXY_ARGS -v `pwd`:/code $DOCKER_IMAGE make $TASKS
 # Reset file ownerships for all files docker might touch
-sudo chown -R -f `id -u`:`id -g` checksums.txt build target
+$PREFIX $DOCKER run --rm $DOCKER_RUN_ARGS $PROXY_ARGS -e UID=`id -u` -e GID=`id -g` -v `pwd`:/code $DOCKER_IMAGE bash -c 'chown -R -f $UID:$GID checksums.txt build target'
 
 if [[ "${UPDATE}" = "yes" ]]; then
   echo "${CHECKSUM_FILE_PATH} file is updated with latest binary hashes!"
