@@ -43,6 +43,8 @@ jobs:
       run: cargo generate --path . standalone-contract --name test-contract
     - name: Run all checks
       run: cd test-contract && make build test check clippy
+    - name: Reproducible build runs
+      run: cd test-contract && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
 
   debian-build:
 
