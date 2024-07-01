@@ -24,7 +24,7 @@ BUILD_DIR := build/$(MODE)
 # likely match the crate name, which is also the name of the final binary.
 # However if this is not the case, you can tweak this variable. As the name hints,
 # more than one binary is supported here.
-BINARIES := $(notdir $(shell pwd))
+BINARIES := {{project-name}}
 
 ifeq (release,$(MODE))
 	MODE_ARGS := --release
