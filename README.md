@@ -173,7 +173,7 @@ The templates provided here, use the same conventions as `ckb-native-build-sampl
 
 ### Reproducible Build
 
-When using this set of templates, we always recommend to use locally installed native versions of LLVM & Rust to build and test your scripts. However, reproducible build is an important part of CKB scripts, which would require locked versions of LLVM & Rust to work, which might not be an easy task when using locally installed versions of compilers.
+When using this set of templates, we always recommend to use locally installed native versions of LLVM & Rust to build and test your scripts. However, reproducible build is an important part of CKB scripts, which would require locked versions of LLVM & Rust to work. It might not be an easy task when using locally installed versions of compilers.
 
 For the time being, we have prepared a script that does reproducible build via [a docker container image](https://github.com/cryptape/llvm-n-rust). We do want to mention that docker is not necessarily THE way to do reproducible build, nor is it the best way to do reproducible build. There might well be other ways that are better, such as chroot or Nix. It's just that historically, docker has been used in CKB script's build process, and adding a script leveraging docker here, provides an easy solution into the issue.
 
@@ -194,6 +194,12 @@ $ ./scripts/reproducible_build_docker --proxy "..." # Setup docker container so 
 ```
 
 By default, the checksum file is stored in `checksums.txt` in the root of the repository. It is strongly recommended that this file is checked into version control, and a CI is setup so reproducible build is always checked in new commits.
+
+Note that reproducible build here relies on the presence of `sha256sum` command, if you are using macOS, you can install it via the following command:
+
+```
+brew install coreutils
+```
 
 ### Standalone Contract Crate
 

@@ -176,6 +176,8 @@ jobs:
         submodules: true
     - name: Install llvm 16
       run: brew install llvm@16
+    - name: Install coreutils
+      run: brew install coreutils
     - name: Install riscv64 target
       run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
@@ -195,6 +197,8 @@ jobs:
         git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
     - name: Run all checks
       run: cd test-workspace && make build test check clippy
+    - name: Reproducible build runs
+      run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
     - name: Generate standalone contract
       run: cargo generate --path . standalone-contract --name test-contract
     - name: Run all checks
