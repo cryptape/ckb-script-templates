@@ -218,7 +218,7 @@ jobs:
       with:
         submodules: true
     - name: Setup Docker on macOS
-      uses: douglascamata/setup-docker-macos-action@v1-alpha
+      run: brew install docker colima && colima start
     - name: Install llvm 16
       run: brew install llvm@16
     - name: Install riscv64 target
