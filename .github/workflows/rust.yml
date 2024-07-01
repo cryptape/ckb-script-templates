@@ -178,9 +178,7 @@ jobs:
         submodules: true
     - name: Install llvm 16
       run: brew install llvm@16
-    - name: Install coreutils
-      run: brew install coreutils
-    - name: Install docker
+    - name: Install riscv64 target
       run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
       run: cargo install cargo-generate
@@ -223,8 +221,6 @@ jobs:
       uses: douglascamata/setup-docker-macos-action@v1-alpha
     - name: Install llvm 16
       run: brew install llvm@16
-    - name: Install coreutils
-      run: brew install coreutils
     - name: Install riscv64 target
       run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate

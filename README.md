@@ -195,12 +195,6 @@ $ ./scripts/reproducible_build_docker --proxy "..." # Setup docker container so 
 
 By default, the checksum file is stored in `checksums.txt` in the root of the repository. It is strongly recommended that this file is checked into version control, and a CI is setup so reproducible build is always checked in new commits.
 
-Note that reproducible build here relies on the presence of `sha256sum` command, if you are using macOS, you can install it via the following command:
-
-```
-brew install coreutils
-```
-
 ### Standalone Contract Crate
 
 In rare cases if you want to simply use a standalone contract crate without a workspace. The [standalone-contract](https://github.com/cryptape/ckb-script-templates/tree/main/standalone-contract) template is prepared for you:

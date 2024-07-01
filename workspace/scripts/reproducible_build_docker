@@ -61,5 +61,5 @@ $DOCKER run --rm $DOCKER_RUN_ARGS -e UID=`id -u` -e GID=`id -g` -v `pwd`:/code $
 if [[ "${UPDATE}" = "yes" ]]; then
   echo "${CHECKSUM_FILE_PATH} file is updated with latest binary hashes!"
 else
-  sha256sum -c ${CHECKSUM_FILE_PATH}
+  shasum -a 256 -c ${CHECKSUM_FILE_PATH}
 fi
