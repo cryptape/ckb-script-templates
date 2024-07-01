@@ -75,4 +75,9 @@ clean:
 prepare:
 	rustup target add riscv64imac-unknown-none-elf
 
+# Generate checksum info for reproducible build
+CHECKSUM_FILE := build/checksums-$(MODE).txt
+checksum: build
+	sha256sum build/$(MODE)/* > $(CHECKSUM_FILE)
+
 .PHONY: build test check clippy fmt cargo clean prepare
