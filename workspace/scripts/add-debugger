@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#
+# Add code for native debugging to existing onchain-script
+
+CONTRACT_NAME=$1
+
+if [ "$CONTRACT_NAME" = "_" ]; then
+    directory="./contracts"
+    if [ ! -d "$directory" ]; then
+        echo "No available contract"
+        exit 1
+    fi
+
+    folders=($(ls -d $directory/*/))
+    contracts=()
+    for i in "${!folders[@]}"; do
+        contract_name=$(echo "${folders[$i]}" | awk -F'/' '{print $(NF-1)}')
+        if [ ! -d "${folders[$i]}/${contract_name}-dbg" ]; then
+            contracts+=("${contract_name}")
+        fi
+    done
+
+    
+    if [ ${#contracts[@]} -eq 0 ]; then
+        echo "No available contract"
+        exit 2
+    fi
+
+    echo "Select contracts:"
+    for i in "${!folders[@]}"; do
+        folder_name=$(echo "${folders[$i]}" | awk -F'/' '{print $(NF-1)}')
+        echo "    $((i+1)): ${contracts[$i]}"
+    done
+    echo "Enter index:"
+    read contract_index
+    if [[ "$contract_index" =~ ^[1-9][0-9]*$ ]] && [ "$contract_index" -le "${#contracts[@]}" ]; then
+        CONTRACT_NAME="${contracts[$((contract_index-1))]}"
+    else
+        echo "Invalid input"
+        exit 3
+    fi
+else
+    if [ ! -d "contracts/$CONTRACT_NAME" ]; then
+        echo "Contract does not exist"
+        exit 4
+    fi
+    if [ -d "contracts/$CONTRACT_NAME/$CONTRACT_NAME-dbg" ]; then
+        echo "Already exists, no need to create"
+        exit 5
+    fi
+fi
+
+CONTRACT_CRATE=$(echo "$CONTRACT_NAME" | tr '-' '_')
+
+cd contracts/$CONTRACT_NAME
+cargo generate $2 $3 add-debugger -n $CONTRACT_NAME-dbg -d contract_name=$CONTRACT_NAME -d contract_crate_name=$CONTRACT_CRATE
+mv $CONTRACT_NAME-dbg/src/contract-lib.rs src/lib.rs
+echo "Finally, you need to add a feature to the contract's Cargo.toml:"
+echo "simulator = ["ckb-std/simulator"]"

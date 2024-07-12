@@ -119,6 +119,14 @@ generate:
 		mv Cargo.toml.new Cargo.toml; \
 	fi
 
+add-debugger:
+	@set -eu; \
+	if [ "x$(CRATE)" = "x" ]; then \
+		scripts/add-debugger _ $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+	else \
+		scripts/add-debugger $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+	fi
+
 prepare:
 	rustup target add riscv64imac-unknown-none-elf
 
