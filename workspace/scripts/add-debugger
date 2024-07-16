@@ -57,3 +57,10 @@ cargo generate $2 $3 add-debugger -n $CONTRACT_NAME-dbg -d contract_name=$CONTRA
 mv $CONTRACT_NAME-dbg/src/contract-lib.rs src/lib.rs
 echo "Finally, you need to add a feature to the contract's Cargo.toml:"
 echo "simulator = ["ckb-std/simulator"]"
+
+FILE="Cargo.toml"
+if grep -q "\[features\]" "$FILE"; then
+    sed -i '/\[features\]/a\simulator = ["ckb-std/simulator"]' "$FILE"
+else
+    echo -e "\n[features]\nsimulator = [\"ckb-std/simulator\"]" >> "$FILE"
+fi
