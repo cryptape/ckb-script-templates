@@ -1,6 +1,6 @@
 #![cfg_attr(not(feature = "simulator"), no_std)]
-
-// This file will be automatically placed in the contract file, and rename to lib.rs
-
-// #[cfg(feature = "simulator")]
-// pub mod entry;
+#![allow(special_module_name)]
+#[cfg(feature = "simulator")]
+mod main;
+#[cfg(feature = "simulator")]
+pub use main::program_entry;
