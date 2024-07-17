@@ -7,7 +7,7 @@ sub_templates = [
   "contract",
   "atomics-contract",
   "stack-reorder-contract",
-  "add-debugger-contract"
+  "add-debugger",
   # Dependency crate templates
   "c-wrapper-crate",
   "x64-simulator-crate",

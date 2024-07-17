@@ -123,7 +123,7 @@ generate:
 		sed '/@@INSERTION_POINT@@/s/$$/\n  "$(DESTINATION)\/$(CRATE)",/' Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
 	fi; \
-	if [ "$(ALSO_ADD_DEBUGGER)" = "true" ]; then \
+	if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
 		make -C ./ add-debugger; \
 	fi;
 
