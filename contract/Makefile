@@ -44,6 +44,9 @@ build:
 		done \
 	fi
 
+build-simulator:
+	cd {{project-name}}-dbg && cargo build $(MODE_ARGS) && cp target/$(MODE)/*_dbg.* $(TOP)/$(BUILD_DIR)
+
 # test, check, clippy and fmt here are provided for completeness,
 # there is nothing wrong invoking cargo directly instead of make.
 test:

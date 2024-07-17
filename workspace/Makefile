@@ -55,6 +55,17 @@ build:
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
 	fi
 
+build-simulator:
+	mkdir -p $(BUILD_DIR)
+	@set -eu; \
+	if [ "x$(CONTRACT)" = "x" ]; then \
+		for contract in $(wildcard contracts/*); do \
+			$(MAKE) -e -C $$contract build-simulator; \
+		done; \
+	else \
+		$(MAKE) -e -C contracts/$(CONTRACT) build-simulator; \
+	fi
+
 # Run a single make task for a specific contract. For example:
 #
 # make run CONTRACT=stack-reorder TASK=adjust_stack_size STACK_SIZE=0x200000
@@ -95,6 +106,7 @@ TEMPLATE_REPO := https://github.com/cryptape/ckb-script-templates
 CRATE :=
 TEMPLATE := contract
 DESTINATION := contracts
+ALSO_ADD_DEBUGGER := true
 generate:
 	@set -eu; \
 	if [ "x$(CRATE)" = "x" ]; then \

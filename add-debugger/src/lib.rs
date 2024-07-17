@@ -1,11 +1,1 @@
-ckb_std::entry_simulator!(program_entry);
-
-/// program entry
-fn program_entry() -> i8 {
-    // Call main function and return error code
-    // match {{contract_crate_name}}::entry::main() {
-    //     Ok(_) => 0,
-    //     Err(err) => err as i8,
-    // }
-    0
-}
+ckb_std::entry_simulator!({{contract_crate_name}}::program_entry);
