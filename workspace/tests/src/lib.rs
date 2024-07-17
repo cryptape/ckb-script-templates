@@ -88,6 +88,17 @@ impl Loader {
         }
         result.unwrap().into()
     }
+
+    pub fn load_binary_dbg(
+        &self,
+        context: &mut ckb_testtool::context::Context,
+        name: &str,
+    ) -> Bytes {
+        let mut path = self.0.clone();
+        path.push(name);
+
+        context.load_binary(path)
+    }
 }
 
 // This helper method runs Context::verify_tx, but in case error happens,
