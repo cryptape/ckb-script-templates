@@ -3,6 +3,10 @@ name = "tests"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+# default = [ "simulator" ]
+simulator = [ "ckb-testtool/simulator" ]
+
 [dependencies]
-ckb-testtool = "0.10.2"
+ckb-testtool = "0.12.0"
 serde_json = "1.0"
