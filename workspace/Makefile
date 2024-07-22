@@ -55,7 +55,7 @@ build:
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
 	fi
 
-build-simulator:
+build-simulator: build
 	mkdir -p $(BUILD_DIR)
 	@set -eu; \
 	if [ "x$(CONTRACT)" = "x" ]; then \
@@ -100,6 +100,13 @@ cargo:
 clean:
 	rm -rf build
 	cargo clean
+	@set -eu; \
+	cd contracts; \
+	for dir in * ; do \
+		if [ -d $$dir/$$dir-dbg ]; then \
+			(cd $$dir/$$dir-dbg && cargo clean); \
+		fi \
+	done
 
 TEMPLATE_TYPE := --git
 TEMPLATE_REPO := https://github.com/cryptape/ckb-script-templates
