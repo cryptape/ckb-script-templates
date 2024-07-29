@@ -126,6 +126,10 @@ generate:
 		fi; \
 		sed "s,@@INSERTION_POINT@@,@@INSERTION_POINT@@\n  \"$$GENERATED_DIR\"\,," Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
+		if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
+			echo "Generate native simulator debugger"; \
+			scripts/add-debugger $${GENERATED_DIR#$(DESTINATION)/} $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+		fi; \
 	else \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION) \
@@ -136,9 +140,10 @@ generate:
 		fi; \
 		sed '/@@INSERTION_POINT@@/s/$$/\n  "$(DESTINATION)\/$(CRATE)",/' Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
-	fi; \
-	if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
-		make -C ./ add-debugger; \
+		if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
+			echo "Generate native simulator debugger"; \
+			scripts/add-debugger $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+		fi; \
 	fi;
 
 add-debugger:

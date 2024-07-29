@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 #
 # Add code for native debugging to existing onchain-script
-
 CONTRACT_NAME=$1
 
 if [ "$CONTRACT_NAME" = "_" ]; then
     directory="./contracts"
     if [ ! -d "$directory" ]; then
-        echo "No available contract"
+        echo "No available contract a"
         exit 1
     fi
 
@@ -20,9 +19,8 @@ if [ "$CONTRACT_NAME" = "_" ]; then
         fi
     done
 
-    
     if [ ${#contracts[@]} -eq 0 ]; then
-        echo "No available contract"
+        echo "No available contract b"
         exit 2
     fi
 

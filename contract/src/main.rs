@@ -1,7 +1,7 @@
 #![cfg_attr(not(feature = "simulator"), no_std)]
 #![cfg_attr(not(any(feature = "simulator", test)), no_main)]
 
-#[cfg(test)]
+#[cfg(any(feature = "simulator", test))]
 extern crate alloc;
 
 #[cfg(not(any(feature = "simulator", test)))]
