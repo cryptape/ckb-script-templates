@@ -12,3 +12,8 @@ ckb-std = { version = "0.15.1", features = ["simulator"] }
 crate-type = ["cdylib"]
 
 [workspace]
+
+# TODO: Will be deleted after release
+[replace]
+"ckb-std:0.15.3" = { git = "https://github.com/nervosnetwork/ckb-std.git", branch = "master" }
+"ckb-x64-simulator:0.8.0" = { git = "https://github.com/joii2020/ckb-x64-simulator.git", branch = "main" }
