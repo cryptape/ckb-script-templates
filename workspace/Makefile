@@ -23,6 +23,10 @@ CONTRACT :=
 CLEAN_BUILD_DIR_FIRST := true
 BUILD_DIR := build/$(MODE)
 
+ifeq (release,$(MODE))
+	MODE_ARGS := --release
+endif
+
 # Pass setups to child make processes
 export CUSTOM_RUSTFLAGS
 export TOP
@@ -43,6 +47,9 @@ build:
 	if [ "x$(CONTRACT)" = "x" ]; then \
 		for contract in $(wildcard contracts/*); do \
 			$(MAKE) -e -C $$contract build; \
+		done; \
+		for crate in $(wildcard crates/*); do \
+			cargo build -p $$(basename $$crate) $(MODE_ARGS) $(CARGO_ARGS); \
 		done; \
 	else \
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
