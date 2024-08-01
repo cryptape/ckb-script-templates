@@ -1,0 +1,6 @@
+[template]
+cargo_generate_version = ">=0.16.0"
+
+[placeholders]
+contract_name = { prompt = "contract name", type = "string" }
+contract_crate_name = { prompt = "contract crate name", type = "string" }
