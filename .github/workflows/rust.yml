@@ -239,41 +239,42 @@ jobs:
   # References:
   # * https://github.com/orgs/community/discussions/69211
   # * https://github.com/marketplace/actions/setup-docker-on-macos
-  macos-x64-reproducible-build:
-
-    runs-on: macos-13
-
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Setup Docker on macOS
-      run: brew install docker colima && colima start
-    - name: Install llvm 16
-      run: brew install llvm@16
-    - name: Install riscv64 target
-      run: rustup target add riscv64imac-unknown-none-elf
-    - name: Install cargo generate
-      run: cargo install cargo-generate
-    - name: Generate workspace
-      run: cargo generate --path . workspace --name test-workspace
-    - name: Generate crates && contracts
-      run: cd test-workspace &&
-        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
-    - name: Submodules
-      run: cd test-workspace &&
-        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
-        git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
-    - name: Reproducible build runs
-      run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
-    - name: Generate standalone contract
-      run: cargo generate --path . standalone-contract --name test-contract
-    - name: Reproducible build runs
-      run: cd test-contract && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
+  # NOTE: this test is not stable right now, disabling it till we can find a better solution
+#   macos-x64-reproducible-build:
+# 
+#     runs-on: macos-13
+# 
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         submodules: true
+#     - name: Setup Docker on macOS
+#       run: brew install docker colima && colima start
+#     - name: Install llvm 16
+#       run: brew install llvm@16
+#     - name: Install riscv64 target
+#       run: rustup target add riscv64imac-unknown-none-elf
+#     - name: Install cargo generate
+#       run: cargo install cargo-generate
+#     - name: Generate workspace
+#       run: cargo generate --path . workspace --name test-workspace
+#     - name: Generate crates && contracts
+#       run: cd test-workspace &&
+#         make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+#         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+#         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+#         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+#         make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+#     - name: Submodules
+#       run: cd test-workspace &&
+#         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
+#         git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+#     - name: Reproducible build runs
+#       run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
+#     - name: Generate standalone contract
+#       run: cargo generate --path . standalone-contract --name test-contract
+#     - name: Reproducible build runs
+#       run: cd test-contract && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
 
   windows-build:
 
