@@ -13,6 +13,11 @@ overflow-checks = true
 strip = true
 codegen-units = 1
 
+[profile.ckb-debug]
+inherits = "release"
+strip = false
+debug = true
+
 # TODO: Will be deleted after release
 [replace]
 "ckb-std:0.15.3" = { git = "https://github.com/nervosnetwork/ckb-std.git", branch = "master" }

@@ -50,7 +50,7 @@ fi
 
 CONTRACT_CRATE=$(echo "$CONTRACT_NAME" | tr '-' '_')
 
-cargo generate $2 $3 add-debugger -n $CONTRACT_NAME-dbg --destination contracts/$CONTRACT_NAME -d contract_name=$CONTRACT_NAME -d contract_crate_name=$CONTRACT_CRATE
+cargo generate $2 $3 native-simulator -n $CONTRACT_NAME-dbg --destination contracts/$CONTRACT_NAME -d contract_name=$CONTRACT_NAME -d contract_crate_name=$CONTRACT_CRATE
 cd contracts/$CONTRACT_NAME
 mv $CONTRACT_NAME-dbg/src/contract-lib.rs src/lib.rs
 echo "Finally, you need to add a feature to the contract's Cargo.toml:"

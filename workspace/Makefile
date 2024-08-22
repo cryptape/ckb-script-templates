@@ -60,7 +60,9 @@ build-simulator: build
 	@set -eu; \
 	if [ "x$(CONTRACT)" = "x" ]; then \
 		for contract in $(wildcard contracts/*); do \
-			$(MAKE) -e -C $$contract build-simulator; \
+			if [ -d "$$contract/`basename $$contract`-dbg" ]; then \
+				$(MAKE) -e -C $$contract build-simulator; \
+			fi; \
 		done; \
 	else \
 		$(MAKE) -e -C contracts/$(CONTRACT) build-simulator; \
@@ -128,7 +130,7 @@ generate:
 		mv Cargo.toml.new Cargo.toml; \
 		if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
 			echo "Generate native simulator debugger"; \
-			scripts/add-debugger $${GENERATED_DIR#$(DESTINATION)/} $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+			scripts/generate-native-simulator $${GENERATED_DIR#$(DESTINATION)/} $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
 		fi; \
 	else \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
@@ -142,16 +144,16 @@ generate:
 		mv Cargo.toml.new Cargo.toml; \
 		if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
 			echo "Generate native simulator debugger"; \
-			scripts/add-debugger $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+			scripts/generate-native-simulator $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
 		fi; \
 	fi;
 
-add-debugger:
+generate-native-simulator:
 	@set -eu; \
 	if [ "x$(CRATE)" = "x" ]; then \
-		scripts/add-debugger _ $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+		scripts/generate-native-simulator _ $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
 	else \
-		scripts/add-debugger $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
+		scripts/generate-native-simulator $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
 	fi
 
 prepare:
