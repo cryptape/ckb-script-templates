@@ -1,5 +1,3 @@
-Here's the polished version:
-
 # Debugging Contract
 
 ## Native Simulator Debugging
