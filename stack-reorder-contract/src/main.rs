@@ -12,15 +12,15 @@ ckb_std::entry!(program_entry);
 default_alloc!();
 
 pub fn program_entry() -> i8 {
-    let mut x: u64;
+    let mut _x: u64;
     unsafe {
         core::arch::asm!(
-            "mv {x}, sp",
-            x = out(reg) x,
+            "mv {_x}, sp",
+            _x = out(reg) _x,
         );
     }
 
-    ckb_std::debug!("Current SP is {:x}", x);
+    ckb_std::debug!("Current SP is {:x}", _x);
 
     0
 }
