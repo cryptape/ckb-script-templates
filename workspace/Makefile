@@ -55,19 +55,6 @@ build:
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
 	fi
 
-build-simulator: build
-	mkdir -p $(BUILD_DIR)
-	@set -eu; \
-	if [ "x$(CONTRACT)" = "x" ]; then \
-		for contract in $(wildcard contracts/*); do \
-			if [ -d "$$contract/`basename $$contract`-dbg" ]; then \
-				$(MAKE) -e -C $$contract build-simulator; \
-			fi; \
-		done; \
-	else \
-		$(MAKE) -e -C contracts/$(CONTRACT) build-simulator; \
-	fi
-
 # Run a single make task for a specific contract. For example:
 #
 # make run CONTRACT=stack-reorder TASK=adjust_stack_size STACK_SIZE=0x200000
@@ -115,7 +102,6 @@ TEMPLATE_REPO := https://github.com/cryptape/ckb-script-templates
 CRATE :=
 TEMPLATE := contract
 DESTINATION := contracts
-ALSO_ADD_DEBUGGER := true
 generate:
 	@set -eu; \
 	if [ "x$(CRATE)" = "x" ]; then \
@@ -128,10 +114,6 @@ generate:
 		fi; \
 		sed "s,@@INSERTION_POINT@@,@@INSERTION_POINT@@\n  \"$$GENERATED_DIR\"\,," Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
-		if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
-			echo "Generate native simulator debugger"; \
-			scripts/generate-native-simulator $${GENERATED_DIR#$(DESTINATION)/} $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
-		fi; \
 	else \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION) \
@@ -142,10 +124,6 @@ generate:
 		fi; \
 		sed '/@@INSERTION_POINT@@/s/$$/\n  "$(DESTINATION)\/$(CRATE)",/' Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
-		if [ "$(ALSO_ADD_DEBUGGER)" = "true" ] && [ "$(TEMPLATE)" = "contract" ]; then \
-			echo "Generate native simulator debugger"; \
-			scripts/generate-native-simulator $(CRATE) $(TEMPLATE_TYPE) $(TEMPLATE_REPO); \
-		fi; \
 	fi;
 
 generate-native-simulator:
