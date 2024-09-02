@@ -6,12 +6,12 @@ MODE := release
 BUILD_DIR := ../build/$(MODE)
 
 build:
-	mkdir -p ../$(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)
 	@set -eu; \
 	if [ "x$(CONTRACT)" = "x" ]; then \
 		for contract in $(wildcard ./*); do \
 			if [ -f $$contract/Cargo.toml ]; then \
-				cd $$contract && cargo build && cp target/debug/*_dbg.* ../$(BUILD_DIR); \
+				cd $$contract && cargo build && cp target/debug/*_sim.* ../$(BUILD_DIR)/; \
 			fi; \
 		done; \
 	else \
