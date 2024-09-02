@@ -1,14 +1,14 @@
-#![cfg_attr(not(feature = "simulator"), no_std)]
-#![cfg_attr(not(any(feature = "simulator", test)), no_main)]
+#![no_std]
+#![cfg_attr(not(test), no_main)]
 
-#[cfg(any(feature = "simulator", test))]
+#[cfg(test)]
 extern crate alloc;
 
-#[cfg(not(any(feature = "simulator", test)))]
+#[cfg(not(test))]
 use ckb_std::default_alloc;
-#[cfg(not(any(feature = "simulator", test)))]
+#[cfg(not(test))]
 ckb_std::entry!(program_entry);
-#[cfg(not(any(feature = "simulator", test)))]
+#[cfg(not(test))]
 default_alloc!();
 
 pub fn program_entry() -> i8 {
