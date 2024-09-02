@@ -89,13 +89,6 @@ cargo:
 clean:
 	rm -rf build
 	cargo clean
-	@set -eu; \
-	cd contracts; \
-	for dir in * ; do \
-		if [ -d $$dir/$$dir-dbg ]; then \
-			(cd $$dir/$$dir-dbg && cargo clean); \
-		fi \
-	done
 
 TEMPLATE_TYPE := --git
 TEMPLATE_REPO := https://github.com/cryptape/ckb-script-templates
