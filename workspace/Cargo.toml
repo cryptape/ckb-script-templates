@@ -20,4 +20,4 @@ debug = true
 
 # TODO: Will be deleted after release
 [replace]
-"ckb-std:0.15.3" = { git = "https://github.com/nervosnetwork/ckb-std.git", branch = "master" }
+"ckb-std:0.15.3" = { git = "https://github.com/nervosnetwork/ckb-std.git", rev = "36942aa" }
