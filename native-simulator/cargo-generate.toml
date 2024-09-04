@@ -2,5 +2,5 @@
 cargo_generate_version = ">=0.16.0"
 
 [placeholders]
-contract_name = { prompt = "contract name", type = "string" }
-contract_crate_name = { prompt = "contract crate name", type = "string" }
+contract_name = { prompt = "The name of the corresponding contract", type = "string" }
+contract_crate_name = { prompt = "The contract is used as the name of the module in the code. Generally, you need to replace - with _", type = "string" }
