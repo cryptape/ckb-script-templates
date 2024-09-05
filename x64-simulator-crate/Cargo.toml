@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-ckb-std = "0.15.1"
+ckb-std = "0.15.3"
 
 # Supporting native tests powered by ckb-x64-simulator
 [target.'cfg(all(target_arch = "x86_64", unix))'.dependencies.ckb-std]
-version = "0.15.1"
+version = "0.15.3"
 features = ["simulator"]
 
 [target.'cfg(all(target_arch = "x86_64", unix))'.dev-dependencies]
