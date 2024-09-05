@@ -13,6 +13,7 @@ overflow-checks = true
 strip = true
 codegen-units = 1
 
+# This profile is used for debugging with ckb-debugger.
 [profile.ckb-debug]
 inherits = "release"
 strip = false
