@@ -149,7 +149,6 @@ generate-native-simulator:
 	fi; \
 	FILE=contracts/$(CRATE)/src/main.rs; \
 	sed -i 's/#!\[no_std\]/#!\[cfg_attr(not(feature = "simulator"), no_std)\]/' $$FILE; \
-	sed -i 's/#!\[cfg_attr(not(test), no_main)\]/#!\[cfg_attr(not(any(feature = "simulator", test)), no_main)\]/' $$FILE; \
 	sed -i 's/#\[cfg(test)\]/#\[cfg(any(feature = "simulator", test))\]/' $$FILE; \
 	sed -i 's/#\[cfg(not(test))\]/#\[cfg(not(any(feature = "simulator", test)))\]/' $$FILE; \
 	sed '/@@INSERTION_POINT@@/s/$$/\n  "native-simulators\/$(CRATE)-sim",/' Cargo.toml > Cargo.toml.new; \
