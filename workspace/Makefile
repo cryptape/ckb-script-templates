@@ -53,21 +53,10 @@ build:
 		done; \
 	else \
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
-	fi
-
-build-simulator:
-	@set -eu;\
-	if [ ! -d native-simulators ] || [ -z "$$(ls -A native-simulators)" ]; then \
-		echo "There is no native-simulator to compile."; \
-		echo "If necessary, please use:"; \
-		echo "make generate-native-simulator CRATE=<existing contract>"; \
-	else \
-		mkdir -p $(BUILD_DIR); \
-		for sim in $(wildcard native-simulators/*); do \
-			cd $$sim && cargo build && cd ../..; \
-		done; \
-		cp target/debug/*_sim.* $(BUILD_DIR); \
-	fi
+	fi; \
+	for sim in $(wildcard native-simulators/*); do \
+		cd $$sim && cargo build && cd ../..; \
+	done; \
 
 # Run a single make task for a specific contract. For example:
 #
