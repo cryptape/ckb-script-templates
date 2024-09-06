@@ -129,17 +129,6 @@ generate-native-simulator:
 		--destination native-simulators \
 		-d contract_name=$(CRATE) \
 		-d contract_crate_name=`echo "$(CRATE)" | tr '-' '_'`; \
-	mv native-simulators/$(CRATE)-sim/src/contract-lib.rs contracts/$(CRATE)/src/lib.rs; \
-	FILE=contracts/$(CRATE)/Cargo.toml; \
-	if grep -q "\\[features\\]" "$$FILE"; then \
-		sed -i '/\[features\]/a\\simulator = \[\"ckb-std/simulator\"\]' $$FILE; \
-	else \
-		echo "\\n[features]\\nsimulator = [\"ckb-std/simulator\"]\\n" >> $$FILE ; \
-	fi; \
-	FILE=contracts/$(CRATE)/src/main.rs; \
-	sed -i 's/#!\[no_std\]/#!\[cfg_attr(not(feature = "simulator"), no_std)\]/' $$FILE; \
-	sed -i 's/#\[cfg(test)\]/#\[cfg(any(feature = "simulator", test))\]/' $$FILE; \
-	sed -i 's/#\[cfg(not(test))\]/#\[cfg(not(any(feature = "simulator", test)))\]/' $$FILE; \
 	sed '/@@INSERTION_POINT@@/s/$$/\n  "native-simulators\/$(CRATE)-sim",/' Cargo.toml > Cargo.toml.new; \
 	mv Cargo.toml.new Cargo.toml;
 
