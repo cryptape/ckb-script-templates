@@ -9,7 +9,7 @@ ckb-std = "0.15.3"
 # Supporting native tests powered by ckb-x64-simulator
 [target.'cfg(all(target_arch = "x86_64", unix))'.dependencies.ckb-std]
 version = "0.15.3"
-features = ["simulator"]
+features = ["native-simulator"]
 
 [target.'cfg(all(target_arch = "x86_64", unix))'.dev-dependencies]
 ckb-testtool = "0.13.0"
