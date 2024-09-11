@@ -127,9 +127,7 @@ generate-native-simulator:
 	@set -eu; \
 	cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) native-simulator \
 		-n $(CRATE)-sim \
-		--destination native-simulators \
-		-d contract_name=$(CRATE) \
-		-d contract_crate_name=`echo "$(CRATE)" | tr '-' '_'`; \
+		--destination native-simulators; \
 	sed '/@@INSERTION_POINT@@/s/$$/\n  "native-simulators\/$(CRATE)-sim",/' Cargo.toml > Cargo.toml.new; \
 	mv Cargo.toml.new Cargo.toml;
 

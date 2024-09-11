@@ -1,1 +1,1 @@
-ckb_std::entry_simulator!({{contract_crate_name}}::program_entry);
+ckb_std::entry_simulator!({{project-name | remove: "-sim" | replace: "-", "_"}}::program_entry);
