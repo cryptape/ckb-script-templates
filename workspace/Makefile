@@ -51,12 +51,13 @@ build:
 		for crate in $(wildcard crates/*); do \
 			cargo build -p $$(basename $$crate) $(MODE_ARGS) $(CARGO_ARGS); \
 		done; \
+		for sim in $(wildcard native-simulators/*); do \
+			cargo build -p $$(basename $$sim) $(CARGO_ARGS); \
+		done; \
 	else \
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
-	fi; \
-	for sim in $(wildcard native-simulators/*); do \
-		cd $$sim && cargo build && cd ../..; \
-	done; \
+		cargo build -p $(CONTRACT)-sim; \
+	fi;
 
 # Run a single make task for a specific contract. For example:
 #
