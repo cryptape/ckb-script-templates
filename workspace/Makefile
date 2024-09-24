@@ -51,9 +51,13 @@ build:
 		for crate in $(wildcard crates/*); do \
 			cargo build -p $$(basename $$crate) $(MODE_ARGS) $(CARGO_ARGS); \
 		done; \
+		for sim in $(wildcard native-simulators/*); do \
+			cargo build -p $$(basename $$sim) $(CARGO_ARGS); \
+		done; \
 	else \
 		$(MAKE) -e -C contracts/$(CONTRACT) build; \
-	fi
+		cargo build -p $(CONTRACT)-sim; \
+	fi;
 
 # Run a single make task for a specific contract. For example:
 #
@@ -117,7 +121,15 @@ generate:
 		fi; \
 		sed '/@@INSERTION_POINT@@/s/$$/\n  "$(DESTINATION)\/$(CRATE)",/' Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
-	fi
+	fi;
+
+generate-native-simulator:
+	@set -eu; \
+	cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) native-simulator \
+		-n $(CRATE)-sim \
+		--destination native-simulators; \
+	sed '/@@INSERTION_POINT@@/s/$$/\n  "native-simulators\/$(CRATE)-sim",/' Cargo.toml > Cargo.toml.new; \
+	mv Cargo.toml.new Cargo.toml;
 
 prepare:
 	rustup target add riscv64imac-unknown-none-elf
