@@ -5,7 +5,7 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-{{project-name | remove: "-sim"}} = { path = "../../contracts/{{project-name | remove: "-sim"}}", features = ["native-simulator"] }
+{{project-name | append: "@@SIMULATOR_PLACEHOLDER@@" | remove: "-sim@@SIMULATOR_PLACEHOLDER@@"}} = { path = "../../contracts/{{project-name | append: "@@SIMULATOR_PLACEHOLDER@@" | remove: "-sim@@SIMULATOR_PLACEHOLDER@@"}}", features = ["native-simulator"] }
 ckb-std = { version = "0.15.3", features = ["native-simulator"] }
 
 [lib]
