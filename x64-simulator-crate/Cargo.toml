@@ -4,15 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-ckb-std = "0.15.3"
+ckb-std = "0.16.1"
 
 # Supporting native tests powered by ckb-x64-simulator
 [target.'cfg(all(target_arch = "x86_64", unix))'.dependencies.ckb-std]
-version = "0.15.3"
+version = "0.16.1"
 features = ["native-simulator"]
 
 [target.'cfg(all(target_arch = "x86_64", unix))'.dev-dependencies]
-ckb-testtool = "0.13.0"
+ckb-testtool = "0.14.0"
 rusty-fork = "0.3.0"
 rand = "0.8.5"
 serde_json = "1.0"

@@ -13,7 +13,3 @@ overflow-checks = true
 strip = false
 codegen-units = 1
 debug = true
-
-# TODO: Will be deleted after release
-[replace]
-"ckb-std:0.15.3" = { git = "https://github.com/joii2020/ckb-std.git", rev = "d90a4f974a0c8561b6259424a173e22cc86e1ae5" }

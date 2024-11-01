@@ -1,4 +1,4 @@
-#![cfg_attr(not(feature = "native-simulator"), no_std)]
+#![cfg_attr(not(any(feature = "native-simulator", test)), no_std)]
 #![cfg_attr(not(test), no_main)]
 
 #[cfg(any(feature = "native-simulator", test))]
