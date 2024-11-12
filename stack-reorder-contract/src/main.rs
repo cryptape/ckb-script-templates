@@ -1,4 +1,4 @@
-#![no_std]
+#![cfg_attr(not(test), no_std)]
 #![cfg_attr(not(test), no_main)]
 
 #[cfg(test)]
@@ -11,6 +11,7 @@ ckb_std::entry!(program_entry);
 #[cfg(not(test))]
 default_alloc!();
 
+#[allow(unused_variables, unused_assignments)]
 pub fn program_entry() -> i8 {
     let mut x: u64;
     unsafe {

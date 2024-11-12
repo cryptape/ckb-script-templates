@@ -1,0 +1,12 @@
+[package]
+name = "{{project-name}}"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+{{project-name | append: "@@SIMULATOR_PLACEHOLDER@@" | remove: "-sim@@SIMULATOR_PLACEHOLDER@@"}} = { path = "../../contracts/{{project-name | append: "@@SIMULATOR_PLACEHOLDER@@" | remove: "-sim@@SIMULATOR_PLACEHOLDER@@"}}", features = ["native-simulator"] }
+ckb-std = { version = "0.16.3", features = ["native-simulator"] }
+
+[lib]
+crate-type = ["cdylib"]

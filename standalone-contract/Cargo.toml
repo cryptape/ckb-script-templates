@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-ckb-std = "0.15.1"
+ckb-std = "0.16.3"
 
 [dev-dependencies]
-ckb-testtool = "0.10.2"
+ckb-testtool = "0.14.0"
 serde_json = "1.0"
