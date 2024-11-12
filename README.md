@@ -145,7 +145,7 @@ $ make generate TEMPLATE=c-wrapper-crate DESTINATION=crates    # generate a crat
 Ready-to-use templates have been put together for different use cases:
 
 * `contract`: default contract template you should use if no special requirements are neeeded.
-* `atomics-contract`: a contract template that supports atomic builtins without requiring RISC-V A extension. This template allows you to use `log`, `bytes` crate or other code that might deal with atomics.
+* `atomics-contract`: a contract template that supports atomic builtins without requiring RISC-V A extension. This template allows you to use `log`, `bytes` crate or other code that might deal with atomics. **NOTE**: starting from ckb-std v0.116.0, the atomic builtins are provided in ckb-std by default. For Rust based scripts, relying the builtin implementation in ckb-std might be better and more smooth idea. We are keeping this template for now for historic reasons, you can consider it deprecated, and might be removed in future versions.
 * `stack-reorder-contract`: a contract template that adjusts memory layout so stack lives at lower address, and heap lives at higher address. This way a program would explicitly signal errors when stack space is fully use.
 * `c-wrapper-crate`: a crate template that shows how to glue C code in a Rust crate for CKB's contract usage.
 * `x64-simulator-crate`: a crate template that contains Rust-only code, but usees [ckb-x64-simulator](https://github.com/nervosnetwork/ckb-x64-simulator) for tests.
