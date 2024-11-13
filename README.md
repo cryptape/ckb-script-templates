@@ -151,7 +151,7 @@ Ready-to-use templates have been put together for different use cases:
 
 There are also deprecated templates kept for historical reasons.
 
-* `atomics-contract`: a contract template that supports atomic builtins without requiring RISC-V A extension. This template allows you to use `log`, `bytes` crate or other code that might deal with atomics. Note that starting from ckb-std v0.116.0, atomic builtins are provided in ckb-std by default. For Rust based scripts, relying the builtin implementation in ckb-std might be better and more smooth idea. We are still keeping this template for now as a hint for a C based solution. It might be removed in future versions.
+* `atomics-contract`: a contract template that supports atomic builtins without requiring RISC-V A extension. This template allows you to use `log`, `bytes` crate or other code that might deal with atomics. Note that starting from ckb-std v0.16.0, atomic builtins are provided in ckb-std by default. For Rust based scripts, relying the builtin implementation in ckb-std might be better and more smooth idea. We are still keeping this template for now as a hint for a C based solution. It might be removed in future versions.
 
 Certain template might require external modules to be available, for example:
 
