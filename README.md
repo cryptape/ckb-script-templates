@@ -230,7 +230,7 @@ You can then build and test the standalone crate as usual:
 ```
 $ cd standalone-first-contract
 $ make build
-$ make tests
+$ make test
 $ make check
 $ make clippy
 ```
