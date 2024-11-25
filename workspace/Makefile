@@ -127,12 +127,20 @@ generate:
 
 generate-native-simulator:
 	@set -eu; \
+	if [ -z "$(CRATE)" ]; then \
+		echo "Error: Must have CRATE=<Contract Name>"; \
+		exit 1; \
+	fi; \
 	mkdir -p native-simulators; \
 	cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) native-simulator \
 		-n $(CRATE)-sim \
 		--destination native-simulators; \
 	sed '/@@INSERTION_POINT@@/s/$$/\n  "native-simulators\/$(CRATE)-sim",/' Cargo.toml > Cargo.toml.new; \
-	mv Cargo.toml.new Cargo.toml;
+	mv Cargo.toml.new Cargo.toml; \
+	if [ ! -f "contracts/$(CRATE)/Cargo.toml" ]; then \
+		echo "Warning: This is a non-existent contract and needs to be processed manually"; \
+		echo "		Otherwise compilation may fail."; \
+	fi;
 
 prepare:
 	rustup target add riscv64imac-unknown-none-elf

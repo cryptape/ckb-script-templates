@@ -238,3 +238,20 @@ $ make clippy
 The template is tailored built for usage outside of workspace, typically, it is not expected to be used inside a workspace. Feel free to compare it with the default `contract` workspace for differences.
 
 This standalone template also has its own test setup, where in a workspace, a dedicated `tests` crate will handle most of the testing work.
+
+### Native Simulator debug
+
+The `generate-native-simulator` command in the `Makefile` generates a native simulator. It **requires** the `CRATE` parameter to specify an existing subproject. If the parameter is missing or invalid, the command will fail.
+
+```bash
+make generate-native-simulator CRATE=<subproject_name>
+```
+
+To generate a simulator for the `example_crate` subproject:
+
+```bash
+make generate-native-simulator CRATE=example_crate
+```
+
+- The `CRATE` parameter must refer to a subproject.
+- Missing subprojects will cause the command to fail.
