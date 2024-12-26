@@ -16,8 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install llvm 16
-      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 16 && rm llvm.sh
+    - name: Install llvm 18
+      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18 && rm llvm.sh
     - name: Install riscv64 target
       run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
@@ -87,8 +87,8 @@ jobs:
     steps:
     - name: Install dependencies
       run: apt-get update && apt-get -y install curl git build-essential pkg-config libssl-dev lsb-release wget software-properties-common gnupg
-    - name: Install llvm 16
-      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh 16 && rm llvm.sh
+    - name: Install llvm 18
+      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh 18 && rm llvm.sh
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         components: clippy
@@ -206,8 +206,8 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - name: Install llvm 16
-      run: brew install llvm@16
+    - name: Install llvm 18
+      run: brew install llvm@18
     - name: Install riscv64 target
       run: rustup target add riscv64imac-unknown-none-elf
     - name: Install cargo generate
@@ -250,8 +250,8 @@ jobs:
 #         submodules: true
 #     - name: Setup Docker on macOS
 #       run: brew install docker colima && colima start
-#     - name: Install llvm 16
-#       run: brew install llvm@16
+#     - name: Install llvm 18
+#       run: brew install llvm@18
 #     - name: Install riscv64 target
 #       run: rustup target add riscv64imac-unknown-none-elf
 #     - name: Install cargo generate
@@ -288,7 +288,7 @@ jobs:
       shell: pwsh
       # https://github.com/ScoopInstaller/Install#for-admin
       #
-      # Note that on Windows we cannot choose LLVM 16 here, we have to settle on latest stable LLVM
+      # Note that on Windows we cannot choose LLVM 18 here, we have to settle on latest stable LLVM
       run: |
         iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
         scoop install llvm yasm
@@ -331,7 +331,7 @@ jobs:
         usesh: true
         prepare: |
           set -ex
-          pkg install -y llvm16 git gmake bash
+          pkg install -y llvm18 git gmake bash
           curl https://sh.rustup.rs -sSf | sh -s -- -y
           . $HOME/.cargo/env
           rustup target add riscv64imac-unknown-none-elf
