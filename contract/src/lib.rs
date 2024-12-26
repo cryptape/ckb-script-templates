@@ -5,3 +5,5 @@
 mod main;
 #[cfg(feature = "native-simulator")]
 pub use main::program_entry;
+
+extern crate alloc;
