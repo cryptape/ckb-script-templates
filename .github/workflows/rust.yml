@@ -35,6 +35,8 @@ jobs:
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
         git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
+    - name: Lock Rust version
+      run: cd test-workspace && echo "1.75.0" > rust-toolchain
     # TODO: Ubuntu 24.04 ships a clang package with clang, clang-18 and llvm-ar-18, while fedora ships a clang package with
     # clang, clang-19 and llvm-ar. We will need to deal with this quirk between different distros.
     - name: Run all checks
@@ -43,6 +45,8 @@ jobs:
       run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
     - name: Generate standalone contract
       run: cargo generate --path . standalone-contract --name test-contract
+    - name: Lock Rust version
+      run: cd test-contract && echo "1.75.0" > rust-toolchain
     - name: Run all checks
       run: cd test-contract && CLANG=clang-18 make build test check clippy
     - name: Reproducible build runs
