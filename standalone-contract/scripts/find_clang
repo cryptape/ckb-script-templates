@@ -26,7 +26,7 @@ if [[ -n "${BREW_PREFIX}" ]]; then
 fi
 
 for candidate in ${CANDIDATES[@]}; do
-  OUTPUT=$($candidate --version 2> /dev/null | grep 'version [0-9]' | head -n 1 | cut -d'.' -f 1 | rev | cut -d' ' -f 1 | rev)
+  OUTPUT=$($candidate --version 2> /dev/null | grep 'version [0-9]' | head -n 1 | cut -d'.' -f 1 | grep -o '[0-9][0-9]*')
 
   if [[ $((OUTPUT)) -ge 16 ]]; then
     echo "${candidate/${SEARCH_TARGET}/clang}"
