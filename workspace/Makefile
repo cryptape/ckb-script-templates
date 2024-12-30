@@ -102,6 +102,7 @@ DESTINATION := contracts
 generate:
 	@set -eu; \
 	if [ "x$(CRATE)" = "x" ]; then \
+		mkdir -p $(DESTINATION); \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION); \
 		GENERATED_DIR=$$(ls -dt $(DESTINATION)/* | head -n 1); \
@@ -112,6 +113,7 @@ generate:
 		sed "s,@@INSERTION_POINT@@,@@INSERTION_POINT@@\n  \"$$GENERATED_DIR\"\,," Cargo.toml > Cargo.toml.new; \
 		mv Cargo.toml.new Cargo.toml; \
 	else \
+		mkdir -p $(DESTINATION); \
 		cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) $(TEMPLATE) \
 			--destination $(DESTINATION) \
 			--name $(CRATE); \
@@ -125,6 +127,7 @@ generate:
 
 generate-native-simulator:
 	@set -eu; \
+	mkdir -p native-simulators; \
 	cargo generate $(TEMPLATE_TYPE) $(TEMPLATE_REPO) native-simulator \
 		-n $(CRATE)-sim \
 		--destination native-simulators; \
