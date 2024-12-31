@@ -16,8 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install llvm 18
-      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18 && rm llvm.sh
+    - name: Install llvm
+      run: sudo apt update && sudo apt install -y clang # This requires Ubuntu 24.04 or later
     - name: Install cargo generate
       run: cargo install cargo-generate
     - name: Generate workspace
@@ -37,10 +37,8 @@ jobs:
       run: cd test-workspace && echo "1.75.0" > rust-toolchain
     - name: Install riscv64 target
       run: cd test-workspace && rustup target add riscv64imac-unknown-none-elf
-    # TODO: Ubuntu 24.04 ships a clang package with clang, clang-18 and llvm-ar-18, while fedora ships a clang package with
-    # clang, clang-19 and llvm-ar. We will need to deal with this quirk between different distros.
     - name: Run all checks
-      run: cd test-workspace && CLANG=clang-18 make build test check clippy
+      run: cd test-workspace && make build test check clippy
     - name: Reproducible build runs
       run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
     - name: Generate standalone contract
@@ -48,7 +46,7 @@ jobs:
     - name: Lock Rust version
       run: cd test-contract && echo "1.75.0" > rust-toolchain
     - name: Run all checks
-      run: cd test-contract && CLANG=clang-18 make build test check clippy
+      run: cd test-contract && make build test check clippy
     - name: Reproducible build runs
       run: cd test-contract && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
 
