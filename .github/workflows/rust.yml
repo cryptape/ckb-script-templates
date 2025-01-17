@@ -12,12 +12,17 @@ env:
 jobs:
   ubuntu-build:
 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
     - name: Install llvm
-      run: sudo apt update && sudo apt install -y clang # This requires Ubuntu 24.04 or later
+      run: sudo apt update && sudo apt install -y clang llvm # This requires Ubuntu 24.04 or later
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
     - name: Install cargo generate
       run: cargo install cargo-generate
     - name: Generate workspace
@@ -49,36 +54,6 @@ jobs:
       run: cd test-contract && make build test check clippy
     - name: Reproducible build runs
       run: cd test-contract && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
-
-  ubuntu-arm64-docker-build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup qemu binfmt
-      run: docker run --privileged --rm tonistiigi/binfmt --install all
-    - name: Install cargo generate
-      run: cargo install cargo-generate
-    - name: Generate workspace
-      run: cargo generate --path . workspace --name test-workspace
-    - name: Generate crates && contracts
-      run: cd test-workspace &&
-        make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
-    - name: Submodules
-      run: cd test-workspace &&
-        git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
-        git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
-    - name: Reproducible build runs
-      run: cd test-workspace && export DOCKER_RUN_ARGS="--platform linux/arm64" && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
-    - name: Generate standalone contract
-      run: cargo generate --path . standalone-contract --name test-contract
-    - name: Reproducible build runs
-      run: cd test-contract && export DOCKER_RUN_ARGS="--platform linux/arm64" && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
 
   debian-build:
 
