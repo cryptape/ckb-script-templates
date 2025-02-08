@@ -8,7 +8,7 @@ extern crate alloc;
 ckb_std::entry!(program_entry);
 // By default, the following heap configuration is used:
 // * 16KB fixed heap
-// * 1.2MB(roughed up to be 16-byte aligned) dynamic heap
+// * 1.2MB(rounded up to be 16-byte aligned) dynamic heap
 // * Minimal memory block in dynamic heap is 64 bytes
 // For more details, please refer to ckb-std's default_alloc macro
 // and the buddy-alloc alloc implementation.
