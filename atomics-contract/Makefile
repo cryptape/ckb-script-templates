@@ -1,6 +1,6 @@
 # We cannot use $(shell pwd), which will return unix path format on Windows,
 # making it hard to use.
-cur_dir = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+cur_dir = $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 
 TOP := $(cur_dir)
 # RUSTFLAGS that are likely to be tweaked by developers. For example,
