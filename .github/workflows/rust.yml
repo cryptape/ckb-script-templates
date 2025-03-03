@@ -33,7 +33,8 @@ jobs:
         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
@@ -85,7 +86,8 @@ jobs:
         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
@@ -125,7 +127,8 @@ jobs:
         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
@@ -165,7 +168,8 @@ jobs:
         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
@@ -199,7 +203,8 @@ jobs:
         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
@@ -210,50 +215,6 @@ jobs:
       run: cargo generate --path . standalone-contract --name test-contract
     - name: Run all checks
       run: cd test-contract && make build test check clippy
-
-  # For now, github action's latest arm64-based macos runner does not support docker. We will have to
-  # Use an order version for now to test reproducible build on macOS. Maybe when macOS 15 is out we can
-  # re-test later.
-  #
-  # References:
-  # * https://github.com/orgs/community/discussions/69211
-  # * https://github.com/marketplace/actions/setup-docker-on-macos
-  # NOTE: this test is not stable right now, disabling it till we can find a better solution
-#   macos-x64-reproducible-build:
-# 
-#     runs-on: macos-13
-# 
-#     steps:
-#     - uses: actions/checkout@v3
-#       with:
-#         submodules: true
-#     - name: Setup Docker on macOS
-#       run: brew install docker colima && colima start
-#     - name: Install llvm 18
-#       run: brew install llvm@18
-#     - name: Install riscv64 target
-#       run: rustup target add riscv64imac-unknown-none-elf
-#     - name: Install cargo generate
-#       run: cargo install cargo-generate
-#     - name: Generate workspace
-#       run: cargo generate --path . workspace --name test-workspace
-#     - name: Generate crates && contracts
-#       run: cd test-workspace &&
-#         make generate CRATE=clib TEMPLATE=c-wrapper-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-#         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-#         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-#         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-#         make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
-#     - name: Submodules
-#       run: cd test-workspace &&
-#         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
-#         git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
-#     - name: Reproducible build runs
-#       run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
-#     - name: Generate standalone contract
-#       run: cargo generate --path . standalone-contract --name test-contract
-#     - name: Reproducible build runs
-#       run: cd test-contract && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
 
   windows-build:
 
@@ -284,7 +245,8 @@ jobs:
         make generate CRATE=rlib TEMPLATE=x64-simulator-crate DESTINATION=crates TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
         make generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
-        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+        make generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=.. &&
+        make generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
     - name: Submodules
       run: cd test-workspace &&
         git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib &&
@@ -329,6 +291,7 @@ jobs:
           gmake generate CRATE=c1 TEMPLATE=contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
           gmake generate CRATE=c2 TEMPLATE=atomics-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
           gmake generate CRATE=c3 TEMPLATE=stack-reorder-contract TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+          gmake generate CRATE=c4 TEMPLATE=contract-without-simulator TEMPLATE_TYPE=--path TEMPLATE_REPO=..
           git submodule add https://github.com/nervosnetwork/ckb-c-stdlib deps/ckb-c-stdlib
           git submodule add https://github.com/xxuejie/lib-dummy-atomics deps/lib-dummy-atomics
           gmake build test check clippy
