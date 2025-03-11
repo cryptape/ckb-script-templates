@@ -1,12 +1,12 @@
-#![cfg_attr(not(any(feature = "native-simulator", test)), no_std)]
+#![cfg_attr(not(any(feature = "library", test)), no_std)]
 #![cfg_attr(not(test), no_main)]
 
-#[cfg(any(feature = "native-simulator", test))]
+#[cfg(any(feature = "library", test))]
 extern crate alloc;
 
-#[cfg(not(any(feature = "native-simulator", test)))]
+#[cfg(not(any(feature = "library", test)))]
 ckb_std::entry!(program_entry);
-#[cfg(not(any(feature = "native-simulator", test)))]
+#[cfg(not(any(feature = "library", test)))]
 // By default, the following heap configuration is used:
 // * 16KB fixed heap
 // * 1.2MB(rounded up to be 16-byte aligned) dynamic heap
