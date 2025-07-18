@@ -16,8 +16,8 @@ fn main() {
         build
             .file("c.c")
             .static_flag(true)
-            .include(format!("{}/deps/ckb-c-stdlib", top))
-            .include(format!("{}/deps/ckb-c-stdlib/libc", top))
+            .include(format!("{top}/deps/ckb-c-stdlib"))
+            .include(format!("{top}/deps/ckb-c-stdlib/libc"))
             .no_default_flags(true)
             .flag("--target=riscv64")
             .flag("-march=rv64imc_zba_zbb_zbc_zbs")

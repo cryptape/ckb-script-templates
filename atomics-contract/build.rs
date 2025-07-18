@@ -4,7 +4,7 @@ fn main() {
         Err(_) => "../..".to_string(),
     };
 
-    println!("cargo:rerun-if-changed={}/deps/lib-dummy-atomics/atomics.c", top);
+    println!("cargo:rerun-if-changed={top}/deps/lib-dummy-atomics/atomics.c");
 
     let target_arch = std::env::var("CARGO_CFG_TARGET_ARCH").unwrap();
     if target_arch == "riscv64" {
@@ -14,10 +14,10 @@ fn main() {
             "Clang must be used as the compiler!"
         );
         build
-            .file(format!("{}/deps/lib-dummy-atomics/atomics.c", top))
+            .file(format!("{top}/deps/lib-dummy-atomics/atomics.c"))
             .static_flag(true)
-            .include(format!("{}/deps/ckb-c-stdlib", top))
-            .include(format!("{}/deps/ckb-c-stdlib/libc", top))
+            .include(format!("{top}/deps/ckb-c-stdlib"))
+            .include(format!("{top}/deps/ckb-c-stdlib/libc"))
             .no_default_flags(true)
             .flag("--target=riscv64")
             .flag("-march=rv64imc_zba_zbb_zbc_zbs")
