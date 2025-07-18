@@ -59,5 +59,5 @@ fn test_{{crate_name}}() {
     let cycles = context
         .verify_tx(&tx, 10_000_000)
         .expect("pass verification");
-    println!("consume cycles: {}", cycles);
+    println!("consume cycles: {cycles}");
 }
