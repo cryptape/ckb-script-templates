@@ -32,7 +32,7 @@ mod tests {
                     .unwrap()
                     .as_nanos() as u64,
             };
-            println!("Seed: {}", seed);
+            println!("Seed: {seed}");
 
             let mut rng = StdRng::seed_from_u64(seed);
             let length = rng.gen_range(0..614400usize);
