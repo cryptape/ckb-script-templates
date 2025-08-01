@@ -21,7 +21,7 @@ The following dependencies are required for the templates:
 
 * `git`, `make`, `sed`, `bash`, `shasum` and others Unix utilities. Refer to the documentation for your operating systems for how to install them. Chances are your system might already have them.
 * `Rust`: latest stable Rust installed via [rustup](https://rustup.rs/) should work. Make sure you have `riscv64` target installed via: `rustup target add riscv64imac-unknown-none-elf`
-* `Clang`: make sure you have clang 18+ installed, sample installtion steps for selected platforms are:
+* `Clang`: make sure you have clang 18+ installed, sample installation steps for selected platforms are:
     + Debian / Ubuntu: `wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18 && rm llvm.sh`
     + Fedora 39+: `sudo dnf -y install clang`
     + Archlinux: `sudo pacman --noconfirm -Syu clang`
@@ -144,10 +144,10 @@ $ make generate TEMPLATE=c-wrapper-crate DESTINATION=crates    # generate a crat
 
 Ready-to-use templates have been put together for different use cases:
 
-* `contract`: default contract template you should use if no special requirements are neeeded.
+* `contract`: default contract template you should use if no special requirements are needed.
 * `stack-reorder-contract`: a contract template that adjusts memory layout so stack lives at lower address, and heap lives at higher address. This way a program would explicitly signal errors when stack space is fully use.
 * `c-wrapper-crate`: a crate template that shows how to glue C code in a Rust crate for CKB's contract usage.
-* `x64-simulator-crate`: a crate template that contains Rust-only code, but usees [ckb-x64-simulator](https://github.com/nervosnetwork/ckb-x64-simulator) for tests.
+* `x64-simulator-crate`: a crate template that contains Rust-only code, but uses [ckb-x64-simulator](https://github.com/nervosnetwork/ckb-x64-simulator) for tests.
 
 There are also deprecated templates kept for historical reasons.
 
