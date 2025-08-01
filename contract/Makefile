@@ -16,7 +16,7 @@ FULL_RUSTFLAGS := -C target-feature=+zba,+zbb,+zbc,+zbs,-a $(CUSTOM_RUSTFLAGS)
 CARGO_ARGS :=
 MODE := release
 # Tweak this to change the clang version to use for building C code. By default
-# we use a bash script with somes heuristics to find clang in current system.
+# we use a bash script with some heuristics to find clang in current system.
 CLANG := $(shell $(TOP)/scripts/find_clang)
 AR := $(subst clang,llvm-ar,$(CLANG))
 OBJCOPY := $(subst clang,llvm-objcopy,$(CLANG))
@@ -64,7 +64,7 @@ fmt:
 # Arbitrary cargo command is supported here. For example:
 #
 # make cargo CARGO_CMD=expand CARGO_ARGS="--ugly"
-# 
+#
 # Invokes:
 # cargo expand --ugly
 CARGO_CMD :=
