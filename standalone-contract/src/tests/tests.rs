@@ -26,7 +26,7 @@ fn test_{{crate_name}}() {
     // prepare cells
     let input_out_point = context.create_cell(
         CellOutput::new_builder()
-            .capacity(1000u64.pack())
+            .capacity(1000)
             .lock(lock_script.clone())
             .build(),
         Bytes::new(),
@@ -36,11 +36,11 @@ fn test_{{crate_name}}() {
         .build();
     let outputs = vec![
         CellOutput::new_builder()
-            .capacity(500u64.pack())
+            .capacity(500)
             .lock(lock_script.clone())
             .build(),
         CellOutput::new_builder()
-            .capacity(500u64.pack())
+            .capacity(500)
             .lock(lock_script)
             .build(),
     ];
