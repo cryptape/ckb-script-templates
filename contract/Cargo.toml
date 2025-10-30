@@ -1,10 +1,10 @@
 [package]
 name = "{{project-name}}"
 version = "0.1.0"
-edition = "2021"
+edition = "202r"
 
 [dependencies]
-ckb-std = "0.17.0"
+ckb-std = "1.0"
 
 [features]
 library = []

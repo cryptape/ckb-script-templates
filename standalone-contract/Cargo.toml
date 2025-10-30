@@ -1,11 +1,11 @@
 [package]
 name = "{{project-name}}"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-ckb-std = "0.17.0"
+ckb-std = "1.0"
 
 [dev-dependencies]
-ckb-testtool = "0.15.0"
+ckb-testtool = "1.0"
 serde_json = "1.0"
