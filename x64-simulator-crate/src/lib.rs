@@ -58,7 +58,7 @@ mod tests {
                 let mut file = tempfile::NamedTempFile::new().expect("tempfile");
                 file.write_all(json.as_ref()).expect("write");
                 file.flush().expect("flush");
-                std::env::set_var("CKB_TX_FILE", file.path());
+                unsafe { std::env::set_var("CKB_TX_FILE", file.path()); }
                 file
             };
 

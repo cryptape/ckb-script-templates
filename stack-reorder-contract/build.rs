@@ -11,7 +11,6 @@ fn main() {
         );
         build
             .file("bootloader.S")
-            .static_flag(true)
             .no_default_flags(true)
             .flag("--target=riscv64")
             .flag("-march=rv64imc_zba_zbb_zbc_zbs")

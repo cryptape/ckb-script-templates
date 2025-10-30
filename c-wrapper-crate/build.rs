@@ -15,7 +15,6 @@ fn main() {
         );
         build
             .file("c.c")
-            .static_flag(true)
             .include(format!("{top}/deps/ckb-c-stdlib"))
             .include(format!("{top}/deps/ckb-c-stdlib/libc"))
             .no_default_flags(true)
