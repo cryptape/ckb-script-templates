@@ -15,7 +15,6 @@ fn main() {
         );
         build
             .file(format!("{top}/deps/lib-dummy-atomics/atomics.c"))
-            .static_flag(true)
             .include(format!("{top}/deps/ckb-c-stdlib"))
             .include(format!("{top}/deps/ckb-c-stdlib/libc"))
             .no_default_flags(true)
