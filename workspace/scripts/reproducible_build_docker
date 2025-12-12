@@ -55,9 +55,9 @@ else
   TASKS+=" build "
 fi
 
-$DOCKER run --rm $DOCKER_RUN_ARGS -v `pwd`:/code $DOCKER_IMAGE make $TASKS
+$DOCKER run --platform=linux/amd64 --rm $DOCKER_RUN_ARGS -v `pwd`:/code $DOCKER_IMAGE make $TASKS
 # Reset file ownerships for all files docker might touch
-$DOCKER run --rm $DOCKER_RUN_ARGS -e UID=`id -u` -e GID=`id -g` -v `pwd`:/code $DOCKER_IMAGE bash -c 'chown -R -f $UID:$GID checksums.txt build target'
+$DOCKER run --platform=linux/amd64 --rm $DOCKER_RUN_ARGS -e UID=`id -u` -e GID=`id -g` -v `pwd`:/code $DOCKER_IMAGE bash -c 'chown -R -f $UID:$GID checksums.txt build target'
 
 if [[ "${UPDATE}" = "yes" ]]; then
   echo "${CHECKSUM_FILE_PATH} file is updated with latest binary hashes!"
