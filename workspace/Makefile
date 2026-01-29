@@ -150,4 +150,139 @@ CHECKSUM_FILE := build/checksums-$(MODE).txt
 checksum: build
 	shasum -a 256 build/$(MODE)/* > $(CHECKSUM_FILE)
 
-.PHONY: build test check clippy fmt cargo clean prepare checksum
+# ============================================================================
+# Coverage targets (using native-simulator mode)
+# ============================================================================
+#
+# Coverage works by:
+# 1. Building simulator .so files with LLVM coverage instrumentation
+# 2. Running tests with native-simulator feature (executes contracts natively)
+# 3. Simulator .so files call __llvm_profile_write_file() on unload to flush coverage
+# 4. Using llvm-cov to generate reports from the profraw files
+#
+# Requirements: rustup component add llvm-tools-preview
+#
+# Usage:
+#   make coverage          # Generate text coverage report
+#   make coverage-html     # Generate HTML coverage report
+#   make coverage-lcov     # Generate LCOV format for CI integration
+
+LLVM_TOOLS_DIR := $(shell rustc --print sysroot)/lib/rustlib/$(shell rustc -vV | grep host | cut -d' ' -f2)/bin
+LLVM_PROFDATA := $(LLVM_TOOLS_DIR)/llvm-profdata
+LLVM_COV := $(LLVM_TOOLS_DIR)/llvm-cov
+COVERAGE_DIR := target/coverage
+PROFRAW_PATTERN := $(COVERAGE_DIR)/profraw
+
+# Dynamically find all simulator .so files
+SIMULATOR_OBJECTS = $(wildcard build/debug/lib*_sim.so)
+SIMULATOR_OBJECT_ARGS = $(foreach obj,$(SIMULATOR_OBJECTS),-object $(obj))
+
+# Build simulators with coverage instrumentation
+build-sim-cov:
+	@echo "Building native simulators with coverage instrumentation..."
+	@# First build the RISC-V contract binaries (these don't need coverage)
+	$(MAKE) build MODE=debug CLEAN_BUILD_DIR_FIRST=true
+	@# Clean simulator artifacts to force rebuild with coverage
+	@rm -f target/debug/deps/lib*_sim*.rlib
+	@rm -f target/debug/lib*_sim.so
+	@# Rebuild simulators with LLVM coverage instrumentation
+	@echo "Rebuilding simulators with LLVM coverage instrumentation..."
+	@for sim in $(wildcard native-simulators/*); do \
+		simname=$$(basename $$sim); \
+		RUSTFLAGS="-C instrument-coverage --cfg=coverage" \
+			cargo build -p $$simname; \
+	done
+	@# Copy the instrumented simulators to build/debug/
+	@echo "Copying instrumented simulators to build/debug/..."
+	@for sim in $(wildcard native-simulators/*); do \
+		simname=$$(basename $$sim); \
+		libname=$$(echo $$simname | sed 's/-/_/g'); \
+		if [ -f "target/debug/lib$${libname}.so" ]; then \
+			cp "target/debug/lib$${libname}.so" build/debug/; \
+		fi; \
+	done
+	@echo "Done! Instrumented simulators are in build/debug/"
+
+# Build simulators for coverage (debug mode for better coverage data)
+build-sim:
+	@echo "Building native simulators..."
+	$(MAKE) build MODE=debug CLEAN_BUILD_DIR_FIRST=true
+
+# Internal target: run tests and collect coverage data
+coverage-run-tests:
+	@echo "Running tests with coverage (native-simulator mode)..."
+	@mkdir -p $(COVERAGE_DIR)
+	@rm -f $(PROFRAW_PATTERN)-*.profraw
+	@# Run all tests with native-simulator feature and coverage instrumentation
+	LLVM_PROFILE_FILE="$(CURDIR)/$(PROFRAW_PATTERN)-%p-%8m.profraw" \
+		RUSTFLAGS="-C instrument-coverage" \
+		MODE=debug cargo test --features native-simulator --package tests \
+		-- --test-threads=1 2>&1 || true
+	@echo "Merging coverage data..."
+	@if ls $(PROFRAW_PATTERN)-*.profraw 1> /dev/null 2>&1; then \
+		$(LLVM_PROFDATA) merge -sparse $(PROFRAW_PATTERN)-*.profraw -o $(COVERAGE_DIR)/coverage.profdata; \
+		rm -f $(PROFRAW_PATTERN)-*.profraw; \
+	else \
+		echo "Warning: No profraw files found. Tests may have failed or no coverage data was generated."; \
+	fi
+	@# Clean up stray default_*.profraw files created by child processes
+	@rm -f $(CURDIR)/default_*.profraw
+
+# Run tests with coverage and generate text report
+coverage: build-sim-cov coverage-run-tests
+	@echo ""
+	@echo "=== Coverage Report ==="
+	@if [ -f "$(COVERAGE_DIR)/coverage.profdata" ]; then \
+		$(LLVM_COV) report \
+			$(SIMULATOR_OBJECT_ARGS) \
+			-instr-profile=$(COVERAGE_DIR)/coverage.profdata \
+			--ignore-filename-regex='\.cargo|rustc|rustlib'; \
+	else \
+		echo "Error: No coverage data found. Run 'make coverage-install' to install llvm-tools."; \
+	fi
+
+# Generate HTML coverage report
+coverage-html: build-sim-cov coverage-run-tests
+	@echo "Generating HTML coverage report..."
+	@mkdir -p $(COVERAGE_DIR)/html
+	@if [ -f "$(COVERAGE_DIR)/coverage.profdata" ]; then \
+		$(LLVM_COV) show \
+			$(SIMULATOR_OBJECT_ARGS) \
+			-instr-profile=$(COVERAGE_DIR)/coverage.profdata \
+			--ignore-filename-regex='\.cargo|rustc|rustlib' \
+			--format=html --output-dir=$(COVERAGE_DIR)/html \
+			--show-line-counts-or-regions --show-instantiations; \
+		echo "Coverage report generated at: $(COVERAGE_DIR)/html/index.html"; \
+	else \
+		echo "Error: No coverage data found."; \
+	fi
+
+# Generate LCOV format for CI integration
+coverage-lcov: build-sim-cov coverage-run-tests
+	@echo "Generating LCOV coverage report..."
+	@if [ -f "$(COVERAGE_DIR)/coverage.profdata" ]; then \
+		$(LLVM_COV) export \
+			$(SIMULATOR_OBJECT_ARGS) \
+			-instr-profile=$(COVERAGE_DIR)/coverage.profdata \
+			--ignore-filename-regex='\.cargo|rustc|rustlib' \
+			--format=lcov > $(COVERAGE_DIR)/lcov.info; \
+		echo "LCOV report generated at: $(COVERAGE_DIR)/lcov.info"; \
+	else \
+		echo "Error: No coverage data found."; \
+	fi
+
+# Install llvm-tools if not present
+coverage-install:
+	@if ! rustup component list --installed | grep -q llvm-tools; then \
+		echo "Installing llvm-tools-preview..."; \
+		rustup component add llvm-tools-preview; \
+	else \
+		echo "llvm-tools-preview is already installed"; \
+	fi
+
+# Clean coverage artifacts
+coverage-clean:
+	rm -rf $(COVERAGE_DIR)
+
+.PHONY: build test check clippy fmt cargo clean prepare checksum \
+        build-sim build-sim-cov coverage-run-tests coverage coverage-html coverage-lcov coverage-install coverage-clean
