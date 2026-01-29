@@ -4,8 +4,7 @@
 fn test_{{crate_name}}() {
     // deploy contract
     let mut context = Context::default();
-    let contract_bin: Bytes = Loader::default().load_binary("{{project-name}}");
-    let out_point = context.deploy_cell(contract_bin);
+    let out_point = context.deploy_cell_by_name("{{project-name}}");
 
     // prepare scripts
     let lock_script = context

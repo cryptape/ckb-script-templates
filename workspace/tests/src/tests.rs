@@ -1,10 +1,4 @@
-use crate::Loader;
-use ckb_testtool::ckb_types::{
-    bytes::Bytes,
-    core::TransactionBuilder,
-    packed::*,
-    prelude::*,
-};
+use ckb_testtool::ckb_types::{bytes::Bytes, core::TransactionBuilder, packed::*, prelude::*};
 use ckb_testtool::context::Context;
 
 // Include your tests here
