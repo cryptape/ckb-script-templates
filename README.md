@@ -255,3 +255,47 @@ make generate-native-simulator CRATE=example_crate
 
 - The `CRATE` parameter must refer to a subproject.
 - Missing subprojects will cause the command to fail.
+
+### Code Coverage
+
+The templates include built-in support for code coverage reporting using LLVM's coverage tools.
+
+**Requirements:**
+- Only contracts created with the `contract` template support coverage (pure Rust contracts with `native-simulator` feature)
+- Other templates (`atomics-contract`, `stack-reorder-contract`, `contract-without-simulator`, `standalone-contract`) do not support coverage
+- Native simulators must be generated for each contract you want coverage for
+- Only works on x86_64 Linux (not ARM)
+
+**Setup:**
+
+1. Install llvm-tools:
+```bash
+make coverage-install
+```
+
+2. Generate native simulators for your contracts:
+```bash
+make generate-native-simulator CRATE=<contract_name>
+```
+
+**Generate Reports:**
+```bash
+make coverage        # Text report to console
+make coverage-html   # HTML report in target/coverage/html/
+make coverage-lcov   # LCOV format for CI integration
+```
+
+**Example:**
+```bash
+# Create a contract using the default 'contract' template
+make generate CRATE=my-contract
+
+# Generate native simulator for it
+make generate-native-simulator CRATE=my-contract
+
+# Install tools and run coverage
+make coverage-install
+make coverage
+```
+
+Coverage works by running tests with the `native-simulator` feature, which executes contract code natively on x86_64 instead of in CKB-VM. This allows LLVM's coverage instrumentation to track which lines of code are executed.

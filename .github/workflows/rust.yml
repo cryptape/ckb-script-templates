@@ -45,6 +45,16 @@ jobs:
       run: cd test-workspace && rustup target add riscv64imac-unknown-none-elf && rustup component add clippy
     - name: Run all checks
       run: cd test-workspace && make build test check clippy
+    - name: Generate native simulators for coverage
+      if: matrix.os == 'ubuntu-latest'
+      run: cd test-workspace &&
+        make generate-native-simulator CRATE=c1 TEMPLATE_TYPE=--path TEMPLATE_REPO=..
+    - name: Install llvm-tools for coverage
+      if: matrix.os == 'ubuntu-latest'
+      run: cd test-workspace && make coverage-install
+    - name: Run coverage tests
+      if: matrix.os == 'ubuntu-latest'
+      run: cd test-workspace && make coverage
     - name: Reproducible build runs
       run: cd test-workspace && ./scripts/reproducible_build_docker --update && ./scripts/reproducible_build_docker --no-clean
     - name: Generate standalone contract
